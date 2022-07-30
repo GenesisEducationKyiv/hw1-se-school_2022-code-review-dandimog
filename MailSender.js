@@ -14,14 +14,14 @@ var transporter = nodemailer.createTransport({
     }
 });
 
-export async function sendEmail(receiverEmail) {
+export async function sendEmail(receiverEmail, btcPrice) {
 
     let info = await transporter.sendMail({
-        from: 'sydorevg@gmail.com', // sender address
-        to: receiverEmail, // list of receivers
-        subject: "Hello ✔", // Subject line
-        text: "Hello world?", // plain text body
-        html: "<b>Hello world?</b>", // html body
+        from: 'sydorevg@gmail.com',
+        to: receiverEmail,
+        subject: "BTC to UAH Price",
+        text: 'The current Bitcoin price is' + btcPrice + 'UAH.',
+        html: '<b>The current Bitcoin price is' + btcPrice + 'UAH.</b>'
     });
 
     console.log("Message sent: %s", info.messageId);

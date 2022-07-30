@@ -27,7 +27,7 @@ export function addMail(requestBody, res) {
 
 }
 
-export function getMails() {
+export function fetchMails() {
     return new Promise((resolve, reject) => {
         fs.readFile('resources/database.json', (err, body) => {
             if (err) return reject(err)
