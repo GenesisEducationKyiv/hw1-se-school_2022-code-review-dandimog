@@ -8,7 +8,7 @@ export function addMail(requestBody, res) {
 
         try {
             var database = JSON.parse(body);
-            if (validateEmail(requestBody.email)) {
+            if (!validateEmail(requestBody.email)) {
                 return res.status(400).send('The provided email do not match the email pattern. Please provide the valid email.');
             } else if (database.emails.includes(requestBody.email)) {
                 return res.status(409).send('The provided user is already in a database.');
@@ -35,7 +35,8 @@ export function fetchMails() {
     });
 }
 
-function validateEmail(elementValue){      
-    var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    return emailPattern.test(elementValue); 
-  } 
+var regex = new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
+
+function validateEmail(email) {  
+    return regex.test(String(email))
+} 

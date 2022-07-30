@@ -20,12 +20,10 @@ router.post('/subscribe', (req, res) => {
 
 router.post('/sendEmails', (req, res) => {
     fetchMails()
-        .then((mails) => {
-            sendMails(mails, retrieveBtcPrice()
-                .then((data) => JSON.parse(data).rate.toString())
-                .catch((error) => {
-                    console.log("Error: ", error)
-                }))
+        .then(async (mails) => {
+            var data = await retrieveBtcPrice();
+            var price = JSON.parse(data).rate.toString();
+            sendMails(mails, price);
             res.status(200).send('')
         })
         .catch((error) => {
@@ -60,7 +58,6 @@ async function retrieveBtcPrice() {
 }
 
 function sendMails(mails, btcPrice) {
-    console.log('this is method:' + mails)
     var array = mails.emails
     console.log(array)
     array.forEach(element => { sendEmail(element, btcPrice) })

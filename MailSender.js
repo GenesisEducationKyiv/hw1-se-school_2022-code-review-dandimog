@@ -20,8 +20,8 @@ export async function sendEmail(receiverEmail, btcPrice) {
         from: 'sydorevg@gmail.com',
         to: receiverEmail,
         subject: "BTC to UAH Price",
-        text: 'The current Bitcoin price is' + btcPrice + 'UAH.',
-        html: '<b>The current Bitcoin price is' + btcPrice + 'UAH.</b>'
+        text: 'The current Bitcoin price is ' + btcPrice + ' UAH.',
+        html: '<b>The current Bitcoin price is ' + btcPrice + ' UAH.</b>'
     });
 
     console.log("Message sent: %s", info.messageId);
