@@ -1,8 +1,8 @@
 import fs from 'fs'
 
-export function addMail (requestBody, res) {
+export function addEmailAddress (requestBody, res) {
   fs.readFile('resources/database.json', (err, body) => {
-    if (err) return res.status(500).send('')
+    if (err) return res.status(500).send('An error occurred while accessing the database.')
 
     try {
       const database = JSON.parse(body)
@@ -22,7 +22,7 @@ export function addMail (requestBody, res) {
   })
 }
 
-export function fetchMails () {
+export function fetchEmailAddresses () {
   return new Promise((resolve, reject) => {
     fs.readFile('resources/database.json', (err, body) => {
       if (err) return reject(err)
@@ -31,8 +31,7 @@ export function fetchMails () {
   })
 }
 
-const regex = /[a-z0-9]+@[a-z]+.[a-z]{2,3}/
-
 function validateEmail (email) {
-  return regex.test(String(email))
+  const emailRegex = /[a-z0-9]+@[a-z]+.[a-z]{2,3}/
+  return emailRegex.test(String(email))
 }

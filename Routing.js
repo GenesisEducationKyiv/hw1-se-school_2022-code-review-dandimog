@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { addMail, fetchMails } from './Repository.js'
+import { addEmailAddress, fetchEmailAddresses } from './Repository.js'
 import { sendEmail } from './MailSender.js'
 import https from 'https'
 
@@ -15,11 +15,11 @@ router.get('/rate', (req, res) => {
 })
 
 router.post('/subscribe', (req, res) => {
-  addMail(req.body, res)
+  addEmailAddress(req.body, res)
 })
 
 router.post('/sendEmails', (req, res) => {
-  fetchMails()
+  fetchEmailAddresses()
     .then(async (mails) => {
       const data = await retrieveBtcPrice()
       const price = JSON.parse(data).rate.toString()
@@ -28,21 +28,21 @@ router.post('/sendEmails', (req, res) => {
     })
     .catch((error) => {
       console.log('Error: ', error)
-      res.status(500).send('')
+      res.status(500).send('An error occurred while accessing the database.')
     })
 })
 
-const options = {
-  method: 'GET',
-  hostname: 'rest.coinapi.io',
-  path: '/v1/exchangerate/BTC/UAH',
-  headers: { 'X-CoinAPI-Key': 'B566AD61-01B1-40FF-BAA0-E30D37E5033B' }
-}
-
 function retrieveBtcPrice () {
+  const requestOptions = {
+    method: 'GET',
+    hostname: 'rest.coinapi.io',
+    path: '/v1/exchangerate/BTC/UAH',
+    headers: { 'X-CoinAPI-Key': 'B566AD61-01B1-40FF-BAA0-E30D37E5033B' }
+  }
+
   return new Promise((resolve, reject) => {
     const body = []
-    const req = https.request(options, res => {
+    const req = https.request(requestOptions, res => {
       res.on('data', chunk => body.push(chunk))
       res.on('end', () => {
         const data = Buffer.concat(body).toString()

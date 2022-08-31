@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
     pass: 'Fakepass12345!',
     clientId: '145401125864-69bmb0l2iaf3mkih1heon2k1dkasgrdj.apps.googleusercontent.com',
     clientSecret: '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',
-    refreshToken: '1//040hRGIZmSN_-CgYIARAAGAQSNwF-L9IrYX4wLzoc6Rs8zJ2Vkpzm5LY4jA1yj3sveaIoCDzOL0ZL_EO-oHkGEKrVqss_cNWUPzU'
+    refreshToken: '1//04O7DtpIkA6ZkCgYIARAAGAQSNwF-L9Ir2xt76pOFBQZpi7zkrA3wPPVy9wiW9PAlUfd9Da2eKP2GzXyiQTUp3wC219HsJBKmgHs'
   }
 })
 
