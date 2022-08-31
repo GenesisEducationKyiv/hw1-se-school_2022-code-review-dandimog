@@ -22,7 +22,7 @@ export function addMail (requestBody, res) {
   })
 }
 
-export function fetchMails () {
+export function fetchEmailAddresses () {
   return new Promise((resolve, reject) => {
     fs.readFile('resources/database.json', (err, body) => {
       if (err) return reject(err)
