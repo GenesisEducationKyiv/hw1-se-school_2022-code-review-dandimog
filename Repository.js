@@ -31,8 +31,8 @@ export function fetchMails () {
   })
 }
 
-const regex = /[a-z0-9]+@[a-z]+.[a-z]{2,3}/
+const emailValidationRule = /[a-z0-9]+@[a-z]+.[a-z]{2,3}/
 
 function validateEmail (email) {
-  return regex.test(String(email))
+  return emailValidationRule.test(String(email))
 }
