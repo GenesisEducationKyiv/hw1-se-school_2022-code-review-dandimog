@@ -1,3 +1,3 @@
 export interface HostInterface {
-    host: string;
+    host: string
 }

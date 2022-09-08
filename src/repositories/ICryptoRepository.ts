@@ -1,4 +1,7 @@
 export interface ICryptoRepository {
-    saveEmail(email : string) : void;
-    getAllEmails() : Array<string>;
+    databasePath: string
+
+    saveEmail(email : string) : void
+    getAllEmails() : Array<string>
+    clearAll() : void
 }
