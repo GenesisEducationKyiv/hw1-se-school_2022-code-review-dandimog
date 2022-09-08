@@ -1,5 +1,6 @@
 import { BitcoinService } from "../services/BitcoinService";
 import { EmailService } from "../services/EmailService";
+import { ValidationService } from "../services/ValidationService";
 import { Service } from "typedi";
 import * as express from 'express';
 
@@ -8,11 +9,15 @@ export class CryptoController {
 
     public router : express.Router = express.Router();
 
-    constructor(public bitcoinService: BitcoinService, public emailService: EmailService) {
+    constructor(
+        public bitcoinService: BitcoinService, 
+        public emailService: EmailService, 
+        public emailValidator: ValidationService
+    ) {
         this.intializeRoutes();
     }
 
-    public intializeRoutes() {
+    private intializeRoutes() : void {
         this.router.get('/rate', this.getBitcoinRate);
         this.router.post('/subscribe', this.subscribeEmail);
         this.router.post('/sendEmails', this.sendRateToSubcribers);
@@ -27,15 +32,14 @@ export class CryptoController {
         }
     }
 
-    // TODO: validation regex + if exist
     private subscribeEmail = (request : express.Request, response : express.Response) => {
         const email : string = request.body.email;
 
-        if (!email) {
-            response.status(400).json({ error: 'Invalid format. Request should contain "email" field.' });
+        if (!email || !this.emailValidator.isEmailValid(email)) {
+            response.status(400).json({ error: 'Invalid format. Please provide the request containing a valid \'email\' field.' });
             return;
         }
-
+        
         try {
             this.emailService.subscribeEmail(email);
             response.status(200).end();
