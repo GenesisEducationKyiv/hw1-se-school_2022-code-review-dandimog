@@ -1,11 +1,11 @@
-import { Service } from "typedi";
-import { IEmailService } from "./IEmailService";
-import { BitcoinService } from "./BitcoinService";
-import { HostInterface } from "../models/HostInterface";
-import { CryptoRepository } from "../repositories/CryptoRepository";
-import Mail from "nodemailer/lib/mailer";
-import SMTPTransport from "nodemailer";
-import { error } from "console";
+import { Service } from "typedi"
+import { IEmailService } from "./IEmailService"
+import { BitcoinService } from "./BitcoinService"
+import { HostInterface } from "../models/HostInterface"
+import { CryptoRepository } from "../repositories/CryptoRepository"
+import Mail from "nodemailer/lib/mailer"
+import SMTPTransport from "nodemailer"
+import { error } from "console"
 
 @Service()
 export class EmailService implements IEmailService {
@@ -14,21 +14,21 @@ export class EmailService implements IEmailService {
 
     public subscribeEmail(email: string): void {
         try {
-            this.repository.saveEmail(email);
+            this.repository.saveEmail(email)
         } catch (err) {
-            console.log(`An error occurred while trying to save the email "${email}".`, err)
-            throw err;
+            console.log(`An error occurred while trying to save the "${email}" email.`, err)
+            throw err
         }
     }
 
     public async sendRateToSubcribers(): Promise<void> {
-        const emails : Array<string> = this.repository.getAllEmails();
+        const emails : Array<string> = this.repository.getAllEmails()
         try {
-            const bitcoinRate : number = await this.bitcoinService.getBitcoinRate();
-            emails.forEach((email : string) => this.sendEmail(this.getRateEmailTemplate(email, bitcoinRate)));
+            const bitcoinRate : number = await this.bitcoinService.getBitcoinRate()
+            emails.forEach((email : string) => this.sendEmail(this.getRateEmailTemplate(email, bitcoinRate)))
         } catch (err) {
-            console.log(error);
-            throw error;
+            console.log('An error occurred while trying to broadcast the Bitcoin rate to subscribers.', error)
+            throw error
         }
     }
 
@@ -48,9 +48,13 @@ export class EmailService implements IEmailService {
             port: 465,
             secure: true,
             auth: authorizationData
-        } as HostInterface);
+        } as HostInterface)
 
-        transporter.sendMail(emailDetails);
+        try {
+            transporter.sendMail(emailDetails)
+        } catch (err) {
+            console.log(`An error occorred while trying to send the provided email: ${emailDetails}.`, err)
+        }
     }
 
     private getRateEmailTemplate(receiverEmail : string, btcPrice : number) : Mail.Options {
