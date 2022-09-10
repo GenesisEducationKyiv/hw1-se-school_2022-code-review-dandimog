@@ -1,38 +1,29 @@
-import { BitcoinService } from "../services/BitcoinService"
+import { CoinApiClient } from "../services/CoinApiClient"
 import { EmailService } from "../services/EmailService"
 import { ValidationService } from "../services/ValidationService"
 import { Service } from "typedi"
-import * as express from 'express'
+import { Request, Response } from 'express'
 
 @Service()
 export class CryptoController {
 
-    public router : express.Router = express.Router()
-
     constructor(
-        public bitcoinService: BitcoinService, 
+        public bitcoinService: CoinApiClient, 
         public emailService: EmailService, 
         public emailValidator: ValidationService
-    ) {
-        this.intializeRoutes()
-    }
+    ) {}
 
-    private intializeRoutes() : void {
-        this.router.get('/rate', this.getBitcoinRate)
-        this.router.post('/subscribe', this.subscribeEmail)
-        this.router.post('/sendEmails', this.sendRateToSubcribers)
-    }
-
-    private getBitcoinRate = async (request : express.Request, response : express.Response) => {
+    public getBitcoinRate = async (request : Request, response : Response) => {
         try {
-            const result = await this.bitcoinService.getBitcoinRate()
+            const result : number = await this.bitcoinService.getBitcoinRate()
+            console.log(result)
             response.status(200).json({ bitcoinRate : result.toString() + ' UAH' })
         } catch (err) {
             response.status(500).json({ error : 'An Internal Server Error occurred while trying to get the Bitcoin rate.' })
         }
     }
 
-    private subscribeEmail = (request : express.Request, response : express.Response) => {
+    public subscribeEmail = (request : Request, response : Response) => {
         const email : string = request.body.email
 
         if (!email || !this.emailValidator.isEmailValid(email)) {
@@ -48,7 +39,7 @@ export class CryptoController {
         }
     }
 
-    private sendRateToSubcribers = (request : express.Request, response : express.Response) => {
+    public sendRateToSubcribers = (request : Request, response : Response) => {
         try {
             this.emailService.sendRateToSubcribers()
             response.status(200).end()

@@ -1,4 +1,4 @@
-import { ValidationService } from "../src/services/ValidationService"
+import { ValidationService } from "../../src/services/ValidationService"
 
 const service : ValidationService = new ValidationService()
 

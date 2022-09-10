@@ -1,12 +1,10 @@
-import { CryptoRepository } from "../src/repositories/CryptoRepository"
-import { ICryptoRepository } from "../src/repositories/ICryptoRepository"
+import { CryptoRepository } from "../../src/repositories/CryptoRepository"
+import { ICryptoRepository } from "../../src/repositories/ICryptoRepository"
 
 const repo: ICryptoRepository = new CryptoRepository()
-repo.databasePath = "tests/resources/database.json"
+repo.databasePath = "tests/resources/mockDatabase.json"
 
 beforeEach(() => { repo.clearAll() })
-
-// TODO: mock the file database / repository in order to reduce the operations with disk (writes & reads)
 
 describe('Testing the CryptoRepository.', () => {
     
