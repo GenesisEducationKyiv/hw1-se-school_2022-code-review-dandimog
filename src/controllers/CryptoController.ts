@@ -1,58 +1,83 @@
-import { ValidationService } from "../services/ValidationService"
+import { ValidationService } from '../services/ValidationService'
 import * as express from 'express'
-import { IEmailService } from "../services/IEmailService"
-import { IBitcoinService } from "../services/IBitcoinService"
+import { IEmailService } from '../services/IEmailService'
+import { IBitcoinService } from '../services/IBitcoinService'
 
 export class CryptoController {
-
-    public router : express.Router = express.Router()
+    public router: express.Router = express.Router()
 
     constructor(
-        public bitcoinService: IBitcoinService, 
-        public emailService: IEmailService, 
+        public bitcoinService: IBitcoinService,
+        public emailService: IEmailService,
         public emailValidator: ValidationService
     ) {
         this.intializeRoutes()
     }
 
-    private intializeRoutes() : void {
+    private intializeRoutes(): void {
         this.router.get('/rate', this.getBitcoinRate)
         this.router.post('/subscribe', this.subscribeEmail)
         this.router.post('/sendEmails', this.sendRateToSubcribers)
     }
 
-    private getBitcoinRate = async (request : express.Request, response : express.Response) => {
+    private getBitcoinRate = async (
+        request: express.Request,
+        response: express.Response
+    ) => {
         try {
             const result = await this.bitcoinService.getBitcoinRate()
-            response.status(200).json({ bitcoinRate : result.toString() + ' UAH' })
+            response
+                .status(200)
+                .json({ bitcoinRate: result.toString() + ' UAH' })
         } catch (err) {
-            response.status(500).json({ error : 'An Internal Server Error occurred while trying to get the Bitcoin rate.' })
+            response
+                .status(500)
+                .json({
+                    error: 'An Internal Server Error occurred while trying to get the Bitcoin rate.',
+                })
         }
     }
 
-    private subscribeEmail = (request : express.Request, response : express.Response) => {
-        const email : string = request.body.email
+    private subscribeEmail = (
+        request: express.Request,
+        response: express.Response
+    ) => {
+        const email: string = request.body.email
 
         if (!email || !this.emailValidator.isEmailValid(email)) {
-            response.status(400).json({ error: 'Invalid format. Please provide the request containing a valid \'email\' field.' })
+            response
+                .status(400)
+                .json({
+                    error: "Invalid format. Please provide the request containing a valid 'email' field.",
+                })
             return
         }
-        
+
         try {
             this.emailService.subscribeEmail(email)
             response.status(200).end()
         } catch (err) {
-            response.status(500).json({ error : 'An Internal Server Error occurred while trying to subscribe the provided email.' })
+            response
+                .status(500)
+                .json({
+                    error: 'An Internal Server Error occurred while trying to subscribe the provided email.',
+                })
         }
     }
 
-    private sendRateToSubcribers = (request : express.Request, response : express.Response) => {
+    private sendRateToSubcribers = (
+        request: express.Request,
+        response: express.Response
+    ) => {
         try {
             this.emailService.sendRateToSubcribers()
             response.status(200).end()
         } catch (err) {
-            response.status(500).json({ error : 'An Internal Server Error occurred while trying to broadcast the Bitcoin rate to subscribers.' })
+            response
+                .status(500)
+                .json({
+                    error: 'An Internal Server Error occurred while trying to broadcast the Bitcoin rate to subscribers.',
+                })
         }
     }
-    
 }

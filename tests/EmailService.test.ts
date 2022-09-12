@@ -1,6 +1,6 @@
-import { CryptoRepository } from "../src/repositories/CryptoRepository"
-import { BitcoinService } from "../src/services/BitcoinService"
-import { EmailService } from "../src/services/EmailService"
+import { CryptoRepository } from '../src/repositories/CryptoRepository'
+import { BitcoinService } from '../src/services/BitcoinService'
+import { EmailService } from '../src/services/EmailService'
 
 const bitcoinRate = 748545.816255
 
@@ -15,7 +15,9 @@ describe('Testing the EmailService.', () => {
         const emailsArray = ['test.email@gmail.com', 'mock.email@yahoo.com']
 
         jest.spyOn(repository, 'getAllEmails').mockReturnValue(emailsArray)
-        jest.spyOn(bitcoinService, 'getBitcoinRate').mockReturnValue(Promise.resolve(bitcoinRate))
+        jest.spyOn(bitcoinService, 'getBitcoinRate').mockReturnValue(
+            Promise.resolve(bitcoinRate)
+        )
         jest.spyOn(emailService, 'sendRateToSubcribers')
 
         expect(emailService.sendRateToSubcribers()).resolves.not.toThrow()
