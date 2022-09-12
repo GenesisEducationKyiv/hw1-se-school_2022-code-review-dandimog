@@ -1,17 +1,23 @@
-import { Inject, Service } from "typedi"
+import { injectable, inject } from "inversify-props"
 import { IEmailService } from "./IEmailService"
 import { ICryptoRepository } from "../repositories/ICryptoRepository"
 import Mail from "nodemailer/lib/mailer"
 import { Transporter }  from "nodemailer"
-import { IBitcoinClient } from "./IBitcoinClient"
+import { IBitcoinClient } from "./clients/IBitcoinClient"
 import { CryptoRepository } from '../repositories/CryptoRepository'
-import { CoinApiClient } from "./CoinApiClient"
+// import { CoinApiClient } from "./CoinApiClient"
+import { BinanceClient } from "./clients/BinanceClient"
+import { Locator } from "../../config"
 
 
-@Service()
+@injectable()
 export class EmailService implements IEmailService {
 
-    constructor(private repository: CryptoRepository, private client: CoinApiClient, @Inject('transporter') private transporter: Transporter) {}
+    constructor(
+        @inject(Locator.ICryptoRepository) private repository: ICryptoRepository, 
+        @inject(Locator.BitcoinClient) private client: IBitcoinClient, 
+        @inject(Locator.Transporter) private transporter: Transporter
+    ) {}
 
     public subscribeEmail(email: string): void {
         try {

@@ -1,8 +1,8 @@
 import { ICryptoRepository } from "./ICryptoRepository"
 import fs from 'fs'
-import { Service } from "typedi"
+import { injectable } from "inversify-props"
 
-@Service()
+@injectable()
 export class CryptoRepository implements ICryptoRepository {
 
     databasePath = "src/resources/database.json"

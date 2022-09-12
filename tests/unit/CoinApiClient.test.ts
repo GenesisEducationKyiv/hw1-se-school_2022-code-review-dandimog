@@ -1,10 +1,11 @@
-import { CoinApiClient } from "../../src/services/CoinApiClient"
+import "reflect-metadata"
+import { BinanceClient } from "../../src/services/clients/BinanceClient"
 import axios, { AxiosResponse } from 'axios'
-import { IBitcoinClient } from "../../src/services/IBitcoinClient"
+import { BitcoinClient } from "../../src/services/clients/BitcoinClient"
 
 jest.mock("axios")
 
-const bitcoinService: IBitcoinClient = new CoinApiClient()
+const bitcoinService: BitcoinClient = new BinanceClient()
 const bitcoinRate = 748545.816255
 
 afterEach(() => jest.clearAllMocks())

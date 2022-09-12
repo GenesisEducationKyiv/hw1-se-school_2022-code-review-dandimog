@@ -1,3 +1,4 @@
+import "reflect-metadata"
 import { ValidationService } from "../../src/services/ValidationService"
 
 const service : ValidationService = new ValidationService()

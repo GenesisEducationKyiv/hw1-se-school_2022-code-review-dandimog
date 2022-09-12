@@ -1,3 +1,4 @@
+import "reflect-metadata"
 import { CryptoRepository } from "../../src/repositories/CryptoRepository"
 import { ICryptoRepository } from "../../src/repositories/ICryptoRepository"
 

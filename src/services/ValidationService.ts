@@ -1,6 +1,6 @@
-import { Service } from "typedi"
+import { injectable } from "inversify-props"
 
-@Service()
+@injectable()
 export class ValidationService {
 
     public isEmailValid(email : string) : boolean {

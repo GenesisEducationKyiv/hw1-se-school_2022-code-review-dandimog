@@ -1,8 +1,9 @@
+import "reflect-metadata"
 import { CryptoRepository } from "../../src/repositories/CryptoRepository"
 import { ICryptoRepository } from "../../src/repositories/ICryptoRepository"
-import { CoinApiClient } from "../../src/services/CoinApiClient"
+import { CoinApiClient } from "../../src/services/clients/CoinApiClient"
 import { EmailService } from "../../src/services/EmailService"
-import { IBitcoinClient } from "../../src/services/IBitcoinClient"
+import { BitcoinClient } from "../../src/services/clients/BitcoinClient"
 import { IEmailService } from "../../src/services/IEmailService"
 import { config } from '../../config'
 import { Transporter } from "nodemailer"
@@ -14,7 +15,7 @@ const bitcoinRate = 748545.816255
 afterEach(() => jest.resetAllMocks())
 
 const repository: ICryptoRepository = new CryptoRepository()
-const bitcoinService: IBitcoinClient = new CoinApiClient()
+const bitcoinService: BitcoinClient = new CoinApiClient()
 const transporter : Transporter = nodemailer.createTransport(config.transporter as SMTPTransport.Options)
 const emailService: IEmailService = new EmailService(repository, bitcoinService, transporter)
 

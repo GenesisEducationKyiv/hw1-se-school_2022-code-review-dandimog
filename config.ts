@@ -16,3 +16,12 @@ export const config = {
         port: parseInt(process.env.PORT as string) || 3000
     }
 }
+
+export const Locator = {
+	IEmailService : Symbol.for("IEmailService"),
+	BitcoinClient : Symbol.for("BitcoinClient"),
+    ValidationService : Symbol.for("ValidationService"),
+    ICryptoRepository : Symbol.for("ICryptoRepository"),
+    ICryptoController : Symbol.for("ICryptoController"),
+    Transporter : Symbol.for("Transporter")
+}

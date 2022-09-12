@@ -1,21 +1,23 @@
-import { CoinApiClient } from "../services/CoinApiClient"
-import { EmailService } from "../services/EmailService"
 import { ValidationService } from "../services/ValidationService"
-import { Service } from "typedi"
 import { Request, Response } from 'express'
+import { IBitcoinClient } from "../services/clients/IBitcoinClient"
+import { IEmailService } from "../services/IEmailService"
+import { injectable, inject } from "inversify-props"
+import { Locator } from "../../config"
+import { ICryptoController } from "./ICryptoController"
 
-@Service()
-export class CryptoController {
+@injectable()
+export class CryptoController implements ICryptoController{
 
     constructor(
-        public bitcoinService: CoinApiClient, 
-        public emailService: EmailService, 
-        public emailValidator: ValidationService
+        @inject(Locator.BitcoinClient) private bitcoinClient: IBitcoinClient, 
+        @inject(Locator.IEmailService) private emailService: IEmailService, 
+        @inject(Locator.ValidationService) private emailValidator: ValidationService
     ) {}
 
     public getBitcoinRate = async (request : Request, response : Response) => {
         try {
-            const result : number = await this.bitcoinService.getBitcoinRate()
+            const result : number = await this.bitcoinClient.getBitcoinRate()
             console.log(result)
             response.status(200).json({ bitcoinRate : result.toString() + ' UAH' })
         } catch (err) {
