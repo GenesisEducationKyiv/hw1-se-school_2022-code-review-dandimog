@@ -1,6 +1,3 @@
-import { Service } from "typedi"
-
-@Service()
 export class ValidationService {
 
     public isEmailValid(email : string) : boolean {

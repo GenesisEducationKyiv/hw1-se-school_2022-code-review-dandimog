@@ -1,4 +1,3 @@
-import { Service } from "typedi"
 import { IEmailService } from "./IEmailService"
 import { BitcoinService } from "./BitcoinService"
 import { HostInterface } from "../models/HostInterface"
@@ -7,7 +6,6 @@ import Mail from "nodemailer/lib/mailer"
 import SMTPTransport from "nodemailer"
 import { error } from "console"
 
-@Service()
 export class EmailService implements IEmailService {
 
     constructor(private repository: CryptoRepository, private bitcoinService: BitcoinService) { }

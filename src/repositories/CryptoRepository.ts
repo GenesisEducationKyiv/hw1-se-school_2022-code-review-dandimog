@@ -1,8 +1,6 @@
 import { ICryptoRepository } from "./ICryptoRepository"
 import fs from 'fs'
-import { Service } from "typedi"
 
-@Service()
 export class CryptoRepository implements ICryptoRepository {
 
     databasePath = "src/resources/database.json"

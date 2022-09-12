@@ -1,17 +1,15 @@
-import { BitcoinService } from "../services/BitcoinService"
-import { EmailService } from "../services/EmailService"
 import { ValidationService } from "../services/ValidationService"
-import { Service } from "typedi"
 import * as express from 'express'
+import { IEmailService } from "../services/IEmailService"
+import { IBitcoinService } from "../services/IBitcoinService"
 
-@Service()
 export class CryptoController {
 
     public router : express.Router = express.Router()
 
     constructor(
-        public bitcoinService: BitcoinService, 
-        public emailService: EmailService, 
+        public bitcoinService: IBitcoinService, 
+        public emailService: IEmailService, 
         public emailValidator: ValidationService
     ) {
         this.intializeRoutes()

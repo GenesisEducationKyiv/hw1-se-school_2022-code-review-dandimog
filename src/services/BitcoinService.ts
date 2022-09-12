@@ -1,11 +1,9 @@
 import { IBitcoinService } from "./IBitcoinService"
-import { Service } from "typedi"
 import axios from "axios"
 import { CoinApiResponse } from '../models/CoinApiResponse'
 
 const COINAPI_URL = "https://rest.coinapi.io/v1/exchangerate/BTC/UAH"
 
-@Service()
 export class BitcoinService implements IBitcoinService {
     public async getBitcoinRate(): Promise<number> {
         try {
