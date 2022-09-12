@@ -6,23 +6,21 @@ repo.databasePath = "tests/resources/database.json"
 
 beforeEach(() => { repo.clearAll() })
 
-// TODO: mock the file database / repository in order to reduce the operations with disk (writes & reads)
-
 describe('Testing the CryptoRepository.', () => {
     
-    test('Check whether the saveEmail() saves the provided emails properly.', () => {
+    test('Check whether the saveEmail() saves the provided emails properly. Collections of saved and retrieved emails should be identical.', () => {
         repo.saveEmail('test.email@gmail.com')
         repo.saveEmail('mock.email@gmail.com')
         expect(repo.getAllEmails()).toEqual(new Array<string>('test.email@gmail.com', 'mock.email@gmail.com'))
     })
 
-    test('Check whether the saveEmail() handles the duplicates properly.', () => {
+    test('Check whether the saveEmail() handles the duplicates properly. The operation of saving the same email should be idempotent.', () => {
         repo.saveEmail('test.email@gmail.com')
         repo.saveEmail('test.email@gmail.com')
         expect(repo.getAllEmails()).toStrictEqual(new Array<string>('test.email@gmail.com'))
     })
 
-    test('Check whether the clearAll() function clears the database as expected.', () => {
+    test('Check whether the clearAll() function clears the database as expected. After calling clearAll() method there should be no emails left.', () => {
         repo.saveEmail('test.email@gmail.com')
         repo.saveEmail('mock.email@gmail.com')
         repo.clearAll()
