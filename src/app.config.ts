@@ -11,10 +11,16 @@ import nodemailer from 'nodemailer'
 import { config } from '../config'
 import SMTPTransport from 'nodemailer/lib/smtp-transport'
 
-const transporter : Transporter = nodemailer.createTransport(config.transporter as SMTPTransport.Options)
+const transporter: Transporter = nodemailer.createTransport(
+    config.transporter as SMTPTransport.Options
+)
 const bitcoinService: IBitcoinClient = new CoinApiClient()
 const repository: ICryptoRepository = new CryptoRepository()
-const emailService: IEmailService = new EmailService(repository, bitcoinService, transporter)
+const emailService: IEmailService = new EmailService(
+    repository,
+    bitcoinService,
+    transporter
+)
 const emailValidator: ValidationService = new ValidationService()
 export const controller: CryptoController = new CryptoController(
     bitcoinService,

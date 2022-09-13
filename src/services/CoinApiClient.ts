@@ -1,5 +1,4 @@
-
-import { IBitcoinClient } from "./IBitcoinClient"
+import { IBitcoinClient } from './IBitcoinClient'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 const COINAPI_URL = 'https://rest.coinapi.io/v1/exchangerate/BTC/UAH'

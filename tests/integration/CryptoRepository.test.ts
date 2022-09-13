@@ -1,11 +1,12 @@
-import { CryptoRepository } from "../../src/repositories/CryptoRepository"
-import { ICryptoRepository } from "../../src/repositories/ICryptoRepository"
+import { CryptoRepository } from '../../src/repositories/CryptoRepository'
+import { ICryptoRepository } from '../../src/repositories/ICryptoRepository'
 
 const repo: ICryptoRepository = new CryptoRepository()
-repo.databasePath = "tests/resources/mockDatabase.json"
+repo.databasePath = 'tests/resources/mockDatabase.json'
 
-beforeEach(() => { repo.clearAll() })
-
+beforeEach(() => {
+    repo.clearAll()
+})
 
 describe('Testing the CryptoRepository.', () => {
     test('Check whether the saveEmail() saves the provided emails properly. Collections of saved and retrieved emails should be identical.', () => {
