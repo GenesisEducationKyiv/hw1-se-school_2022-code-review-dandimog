@@ -1,36 +1,56 @@
 {
-  "name": "genesis",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "dev": "nodemon"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/GenesisEducationKyiv/hw1-se-school_2022-code-review-dandimog.git"
-  },
-  "author": "dandimog",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/GenesisEducationKyiv/hw1-se-school_2022-code-review-dandimog/issues"
-  },
-  "homepage": "https://github.com/GenesisEducationKyiv/hw1-se-school_2022-code-review-dandimog#readme",
-  "devDependencies": {
-    "nodemon": "^2.0.19"
-  },
-  "dependencies": {
-    "@types/body-parser": "^1.19.2",
-    "@types/express": "^4.17.13",
-    "@types/node": "^18.7.14",
-    "@types/nodemailer": "^6.4.5",
-    "axios": "^0.27.2",
-    "body-parser": "^1.20.0",
-    "dotenv": "^16.0.2",
-    "express": "^4.18.1",
-    "nodemailer": "^6.7.8",
-    "reflect-metadata": "^0.1.13",
-    "typedi": "^0.10.0",
-    "typescript": "^4.8.2"
-  }
+    "name": "genesis",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "dev": "rimraf build && nodemon",
+        "test": "rimraf build && jest",
+        "build": "rimraf build && tsc",
+        "lint": "eslint . --ext .ts",
+        "format:check": "prettier --check .",
+        "format:write": "prettier --write .",
+        "lint:check": "eslint .",
+        "lint:fix": "eslint --fix ."
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/GenesisEducationKyiv/hw1-se-school_2022-code-review-dandimog.git"
+    },
+    "author": "dandimog",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/GenesisEducationKyiv/hw1-se-school_2022-code-review-dandimog/issues"
+    },
+    "homepage": "https://github.com/GenesisEducationKyiv/hw1-se-school_2022-code-review-dandimog#readme",
+    "devDependencies": {
+        "@types/jest": "^29.0.1",
+        "@typescript-eslint/eslint-plugin": "^5.37.0",
+        "@typescript-eslint/parser": "^5.37.0",
+        "eslint": "^8.23.1",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-config-standard-with-typescript": "^22.0.0",
+        "eslint-plugin-import": "^2.26.0",
+        "eslint-plugin-n": "^15.2.5",
+        "eslint-plugin-promise": "^6.0.1",
+        "jest": "^29.0.3",
+        "nodemon": "^2.0.19",
+        "prettier": "^2.7.1",
+        "ts-jest": "^29.0.0",
+        "typescript": "^4.8.3"
+    },
+    "dependencies": {
+        "@types/body-parser": "^1.19.2",
+        "@types/express": "^4.17.13",
+        "@types/node": "^18.7.14",
+        "@types/nodemailer": "^6.4.5",
+        "axios": "^0.27.2",
+        "body-parser": "^1.20.0",
+        "dotenv": "^16.0.2",
+        "express": "^4.18.1",
+        "nodemailer": "^6.7.8",
+        "reflect-metadata": "^0.1.13",
+        "rimraf": "^3.0.2",
+        "typedi": "^0.10.0"
+    }
 }
