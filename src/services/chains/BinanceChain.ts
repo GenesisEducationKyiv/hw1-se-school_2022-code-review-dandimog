@@ -1,7 +1,7 @@
 import { BinanceClient } from "../clients/BinanceClient"
-import { CryptoChain } from "./CryptoChain"
+import { BitcoinClientChain } from "./BitcoinClientChain"
 
-export class BinanceChain extends CryptoChain {
+export class BinanceChain extends BitcoinClientChain {
     constructor(binanceClient? : BinanceClient) {
         if (binanceClient !== undefined) {
             super(binanceClient)

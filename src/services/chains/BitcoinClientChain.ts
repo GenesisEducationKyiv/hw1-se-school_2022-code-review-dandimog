@@ -1,9 +1,10 @@
+import { AxiosResponse } from "axios"
 import { BitcoinClient } from "../clients/BitcoinClient"
-import { Chainable } from "../chains/Chainable"
+import { Chainable } from "./Chainable"
 
-export abstract class CryptoChain extends BitcoinClient implements Chainable {
+export class BitcoinClientChain extends BitcoinClient implements Chainable {
 
-    protected nextChain?: CryptoChain
+    protected nextChain?: BitcoinClientChain
     protected bitcoinClient: BitcoinClient
     API_URL : string
 
@@ -13,7 +14,7 @@ export abstract class CryptoChain extends BitcoinClient implements Chainable {
         this.API_URL = bitcoinClient.API_URL
     }
 
-    setNext(nextChain: CryptoChain): CryptoChain {
+    setNext(nextChain: BitcoinClientChain): BitcoinClientChain {
         this.nextChain = nextChain
         return nextChain
     }
@@ -25,8 +26,13 @@ export abstract class CryptoChain extends BitcoinClient implements Chainable {
             if (this.nextChain) {
                 return this.nextChain.getBitcoinRate()
             } else {
-                throw new Error('Some error')
+                console.log('An error occured while trying to get the Bitcoin rate.', err)
+                throw err
             }
         }
+    }
+
+    retrieveRateFromResponse(result: AxiosResponse): number {
+        return this.bitcoinClient.retrieveRateFromResponse(result)
     }
 }

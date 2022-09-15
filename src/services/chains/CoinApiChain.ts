@@ -1,7 +1,7 @@
 import { CoinApiClient } from "../clients/CoinApiClient"
-import { CryptoChain } from "./CryptoChain"
+import { BitcoinClientChain } from "./BitcoinClientChain"
 
-export class CoinApiChain extends CryptoChain {
+export class CoinApiChain extends BitcoinClientChain {
     constructor(coinApiClient? : CoinApiClient) {
         if (coinApiClient !== undefined) {
             super(coinApiClient)
