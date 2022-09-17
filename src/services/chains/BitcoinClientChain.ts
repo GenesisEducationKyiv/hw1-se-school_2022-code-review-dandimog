@@ -1,8 +1,13 @@
 import { AxiosResponse } from "axios"
+import { BitcoinClientFactory } from "../../factories/BitcoinClientFactory"
 import { BitcoinClient } from "../clients/BitcoinClient"
 import { Chainable } from "./Chainable"
 
 export class BitcoinClientChain extends BitcoinClient implements Chainable {
+    
+    createBitcoinClient(): BitcoinClientChain {
+        return new BitcoinClientChain(BitcoinClientFactory.createBitcoinClient(process.env.CRYPTO_CURRENCY_PROVIDER!))
+    }
 
     protected nextChain?: BitcoinClientChain
     protected bitcoinClient: BitcoinClient

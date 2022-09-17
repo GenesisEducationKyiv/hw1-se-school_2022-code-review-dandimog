@@ -7,6 +7,8 @@ export abstract class BitcoinClient implements IBitcoinClient {
     public API_KEY_NAME?: string
     public API_KEY_VALUE?: string
 
+    abstract createBitcoinClient(): BitcoinClient
+
     async getBitcoinRate(): Promise<number> {
         try {
             const headers = (this.API_KEY_NAME !== undefined && this.API_KEY_VALUE !== undefined) ? { headers: { [this.API_KEY_NAME] : this.API_KEY_VALUE } } as AxiosRequestConfig : undefined

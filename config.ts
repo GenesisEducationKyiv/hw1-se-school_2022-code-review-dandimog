@@ -17,6 +17,13 @@ export const config = {
     }
 }
 
+export enum BitcoinClients {
+    BINANCE = 'Binance',
+    COIN_API = 'CoinAPI',
+    COIN_GECKO = 'CoinGecko',
+    COIN_MARKET = 'CoinMarket'
+ }
+
 export const Locator = {
 	IEmailService : Symbol.for("IEmailService"),
 	BitcoinClient : Symbol.for("BitcoinClient"),
