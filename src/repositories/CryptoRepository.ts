@@ -1,29 +1,33 @@
-import { ICryptoRepository } from "./ICryptoRepository"
+import { ICryptoRepository } from './ICryptoRepository'
 import fs from 'fs'
-import { injectable } from "inversify-props"
-
-@injectable()
 export class CryptoRepository implements ICryptoRepository {
+    databasePath: string
 
-    databasePath = "src/resources/database.json"
+    constructor() {
+        this.databasePath =
+            process.env.DATABASE_URL ?? 'src/resources/database.json'
+    }
 
-    public saveEmail(email : string) : void {
+    public saveEmail(email: string): void {
         try {
-            const database : Array<string> = this.getAllEmails()
+            const database: Array<string> = this.getAllEmails()
             if (database.includes(email)) return
             database.push(email)
-            const jsonWrapper = { "emails" : database }
-            const jsonDatabase : string = JSON.stringify(jsonWrapper, null, 2)
+            const jsonWrapper = { emails: database }
+            const jsonDatabase: string = JSON.stringify(jsonWrapper, null, 2)
             fs.writeFileSync(this.databasePath, jsonDatabase)
         } catch (err) {
-            console.log('An error occurred while trying to save the provided email to the database.', err)
+            console.log(
+                'An error occurred while trying to save the provided email to the database.',
+                err
+            )
             throw err
         }
     }
 
-    public getAllEmails() : Array<string> {
+    public getAllEmails(): Array<string> {
         try {
-            const data : Buffer = fs.readFileSync(this.databasePath)
+            const data: Buffer = fs.readFileSync(this.databasePath)
             const json = JSON.parse(data.toString())
             return json.emails
         } catch (err) {
@@ -31,5 +35,4 @@ export class CryptoRepository implements ICryptoRepository {
             throw err
         }
     }
-
 }

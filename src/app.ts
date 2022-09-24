@@ -10,7 +10,7 @@ import { controller } from './app.config'
 
 initRoutes(controller)
 
-const port = config.app.port
+const port: number = config.app.port
 const app: Express = express()
 
 app.use(bodyParser.json())

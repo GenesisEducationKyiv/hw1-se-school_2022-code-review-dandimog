@@ -3,15 +3,14 @@ import { IEmailService } from "./IEmailService"
 import { ICryptoRepository } from "../repositories/ICryptoRepository"
 import Mail from "nodemailer/lib/mailer"
 import { Transporter }  from "nodemailer"
-import { Locator } from "../../config"
 
 
 @injectable()
 export class EmailService implements IEmailService {
 
     constructor(
-        @inject(Locator.ICryptoRepository) private repository: ICryptoRepository, 
-        @inject(Locator.Transporter) private transporter: Transporter
+        private repository: ICryptoRepository, 
+        private transporter: Transporter
     ) {}
 
     public getAllEmails(): string[] {
@@ -27,7 +26,10 @@ export class EmailService implements IEmailService {
         try {
             this.repository.saveEmail(email)
         } catch (err) {
-            console.log(`An error occurred while trying to save the "${email}" email.`, err)
+            console.log(
+                `An error occurred while trying to save the "${email}" email.`,
+                err
+            )
             throw err
         }
     }
@@ -36,19 +38,23 @@ export class EmailService implements IEmailService {
         try {
             subscribers.forEach((email : string) => this.transporter.sendMail(this.fillEmailTemplate(email, rate)))
         } catch (err) {
-            console.log('An error occurred while trying to broadcast the Bitcoin rate to subscribers.', err)
-            throw err
+            console.log(
+                'An error occurred while trying to broadcast the Bitcoin rate to subscribers.',
+                err
+            )
         }
     }
 
-    private fillEmailTemplate(receiverEmail : string, btcPrice : number) : Mail.Options {
+    private fillEmailTemplate(
+        receiverEmail: string,
+        btcPrice: number
+    ): Mail.Options {
         return {
             from: process.env.USER,
             to: receiverEmail,
             subject: 'BTC to UAH Price',
             text: `The current Bitcoin price is ${btcPrice} UAH.`,
-            html: `<b>The current Bitcoin price is ${btcPrice} UAH.</b>`
+            html: `<b>The current Bitcoin price is ${btcPrice} UAH.</b>`,
         }
     }
-
 }

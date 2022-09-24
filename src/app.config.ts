@@ -11,15 +11,15 @@ import SMTPTransport from "nodemailer/lib/smtp-transport"
 import { ValidationService } from "./services/ValidationService"
 import { BinanceChain } from "./services/chains/BinanceChain"
 import { CoinApiChain } from "./services/chains/CoinApiChain"
-import { CryptoChain } from "./services/chains/CryptoChain"
+import { BitcoinClientChain } from "./services/chains/BitcoinClientChain"
 
 const transporter : Transporter = nodemailer.createTransport(config.transporter as SMTPTransport.Options)
-const binanceChain : CryptoChain = new BinanceChain()
-const coinApiChain : CryptoChain = new CoinApiChain()
+const binanceChain : BitcoinClientChain = new BinanceChain()
+const coinApiChain : BitcoinClientChain = new CoinApiChain()
 binanceChain.setNext(coinApiChain)
 
 const repository : ICryptoRepository = new CryptoRepository()
 
-const emailService : IEmailService = new EmailService(repository, binanceChain, transporter)
+const emailService : IEmailService = new EmailService(repository, transporter)
 const validationService : ValidationService = new ValidationService()
 export const controller : ICryptoController = new CryptoController(binanceChain, emailService, validationService)
