@@ -3,10 +3,6 @@ import { IEmailService } from "./IEmailService"
 import { ICryptoRepository } from "../repositories/ICryptoRepository"
 import Mail from "nodemailer/lib/mailer"
 import { Transporter }  from "nodemailer"
-import { IBitcoinClient } from "./clients/IBitcoinClient"
-import { CryptoRepository } from '../repositories/CryptoRepository'
-// import { CoinApiClient } from "./CoinApiClient"
-import { BinanceClient } from "./clients/BinanceClient"
 import { Locator } from "../../config"
 
 
@@ -15,9 +11,17 @@ export class EmailService implements IEmailService {
 
     constructor(
         @inject(Locator.ICryptoRepository) private repository: ICryptoRepository, 
-        @inject(Locator.BitcoinClient) private client: IBitcoinClient, 
         @inject(Locator.Transporter) private transporter: Transporter
     ) {}
+
+    public getAllEmails(): string[] {
+        try {
+            return this.repository.getAllEmails()
+        } catch (err) {
+            console.log(`An error occurred while trying to get all emails.`, err)
+            throw err
+        }
+    }
 
     public subscribeEmail(email: string): void {
         try {
@@ -28,11 +32,9 @@ export class EmailService implements IEmailService {
         }
     }
 
-    public async sendRateToSubcribers(): Promise<void> {
+    public sendRateToSubcribers(rate: number, subscribers: Array<string>): void {
         try {
-            const emails : Array<string> = this.repository.getAllEmails()
-            const bitcoinRate : number = await this.client.getBitcoinRate()
-            emails.forEach((email : string) => this.transporter.sendMail(this.fillEmailTemplate(email, bitcoinRate)))
+            subscribers.forEach((email : string) => this.transporter.sendMail(this.fillEmailTemplate(email, rate)))
         } catch (err) {
             console.log('An error occurred while trying to broadcast the Bitcoin rate to subscribers.', err)
             throw err

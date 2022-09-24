@@ -31,15 +31,5 @@ export class CryptoRepository implements ICryptoRepository {
             throw err
         }
     }
-    
-    public clearAll() : void {
-        try {
-            const jsonWrapper = { "emails" : new Array<string> }
-            const jsonDatabase : string = JSON.stringify(jsonWrapper, null, 2)
-            fs.writeFileSync(this.databasePath, jsonDatabase)
-        } catch (err) {
-            console.log('An error occurred while trying to clear all records in the database.', err)
-            throw err
-        }
-    }
+
 }
