@@ -11,7 +11,7 @@ afterEach(() => jest.clearAllMocks())
 
 describe('Testing the BitcoinService.getBitcoinRate().', () => {
     test('Should return Bitcoin rate on success.', async () => {
-        (axios.get as jest.Mock) = jest.fn(() =>
+        ;(axios.get as jest.Mock) = jest.fn(() =>
             Promise.resolve<AxiosResponse>({
                 status: 200,
                 statusText: 'OK',

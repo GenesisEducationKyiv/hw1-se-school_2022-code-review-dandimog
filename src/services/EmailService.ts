@@ -34,10 +34,7 @@ export class EmailService implements IEmailService {
             )
         } catch (err) {
             console.log(
-                console.log(
-                    'An error occurred while trying to broadcast the Bitcoin rate to subscribers.',
-                    err
-                ),
+                'An error occurred while trying to broadcast the Bitcoin rate to subscribers.',
                 err
             )
         }
