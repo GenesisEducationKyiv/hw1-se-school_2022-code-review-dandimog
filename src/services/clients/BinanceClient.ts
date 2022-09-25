@@ -1,22 +1,16 @@
-import { BitcoinClient } from "./BitcoinClient"
-import { injectable } from "inversify-props"
-import { AxiosResponse } from "axios"
-import { BitcoinClientFactory } from "../../factories/BitcoinClientFactory"
-import { BitcoinClients } from "../../../config"
+import { BitcoinClient } from './BitcoinClient'
+import { AxiosResponse } from 'axios'
+import { BitcoinClientFactory } from '../../factories/BitcoinClientFactory'
+import { BtcClientEnum } from '../../../config'
+import { BinanceFactory } from '../../factories/BinanceFactory'
 
-@injectable()
 export class BinanceClient extends BitcoinClient {
-
     API_URL = 'https://api.binance.com/api/v3/ticker/price?symbol=BTCUAH'
 
     static {
-        BitcoinClientFactory.registerClient(BitcoinClients.BINANCE, new BinanceClient())
+        BitcoinClientFactory.registerFactory(BtcClientEnum.BINANCE, new BinanceFactory())
     }
 
-    createBitcoinClient(): BinanceClient {
-        return new BinanceClient()
-    }
-    
     retrieveRateFromResponse(result: AxiosResponse): number {
         return result.data.price
     }

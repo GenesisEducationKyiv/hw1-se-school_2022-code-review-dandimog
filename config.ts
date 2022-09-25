@@ -13,22 +13,22 @@ export const config = {
         },
     },
     app: {
-        port: parseInt(process.env.PORT as string) || 3000
-    }
+        port: parseInt(process.env.PORT as string) || 3000,
+    },
 }
 
-export enum BitcoinClients {
+export enum BtcClientEnum {
     BINANCE = 'Binance',
     COIN_API = 'CoinAPI',
     COIN_GECKO = 'CoinGecko',
-    COIN_MARKET = 'CoinMarket'
- }
+    COIN_MARKET = 'CoinMarket',
+}
 
 export const Locator = {
-	IEmailService : Symbol.for("IEmailService"),
-	BitcoinClient : Symbol.for("BitcoinClient"),
-    ValidationService : Symbol.for("ValidationService"),
-    ICryptoRepository : Symbol.for("ICryptoRepository"),
-    ICryptoController : Symbol.for("ICryptoController"),
-    Transporter : Symbol.for("Transporter")
+    IEmailService: Symbol.for('IEmailService'),
+    BitcoinClient: Symbol.for('BitcoinClient'),
+    ValidationService: Symbol.for('ValidationService'),
+    ICryptoRepository: Symbol.for('ICryptoRepository'),
+    ICryptoController: Symbol.for('ICryptoController'),
+    Transporter: Symbol.for('Transporter'),
 }

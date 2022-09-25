@@ -1,17 +1,12 @@
-import { AxiosResponse } from "axios"
-import { BitcoinClientFactory } from "../../factories/BitcoinClientFactory"
-import { BitcoinClient } from "../clients/BitcoinClient"
-import { Chainable } from "./Chainable"
+import { AxiosResponse } from 'axios'
+import { BitcoinClient } from '../clients/BitcoinClient'
+import { Chainable } from './Chainable'
 
 export class BitcoinClientChain extends BitcoinClient implements Chainable {
-    
-    createBitcoinClient(): BitcoinClientChain {
-        return new BitcoinClientChain(BitcoinClientFactory.createBitcoinClient(process.env.CRYPTO_CURRENCY_PROVIDER!))
-    }
 
     protected nextChain?: BitcoinClientChain
     protected bitcoinClient: BitcoinClient
-    API_URL : string
+    API_URL: string
 
     constructor(bitcoinClient: BitcoinClient) {
         super()
@@ -31,7 +26,10 @@ export class BitcoinClientChain extends BitcoinClient implements Chainable {
             if (this.nextChain) {
                 return this.nextChain.getBitcoinRate()
             } else {
-                console.log('An error occured while trying to get the Bitcoin rate.', err)
+                console.log(
+                    'An error occured while trying to get the Bitcoin rate.',
+                    err
+                )
                 throw err
             }
         }
