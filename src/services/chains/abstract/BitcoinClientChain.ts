@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { BitcoinClient } from '../clients/BitcoinClient'
+import { BitcoinClient } from '../../clients/abstract/BitcoinClient'
 import { Chainable } from './Chainable'
 
 export class BitcoinClientChain extends BitcoinClient implements Chainable {
@@ -35,7 +35,7 @@ export class BitcoinClientChain extends BitcoinClient implements Chainable {
         }
     }
 
-    retrieveRateFromResponse(result: AxiosResponse): number {
+    retrieveRateFromResponse(result: AxiosResponse["data"]): number {
         return this.bitcoinClient.retrieveRateFromResponse(result)
     }
 }

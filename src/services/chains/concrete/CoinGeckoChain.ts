@@ -1,8 +1,8 @@
-import { CoinGeckoClient } from "../clients/CoinGeckoClient"
-import { BitcoinClientChain } from "./BitcoinClientChain"
+import { CoinGeckoClient } from '../../clients/concrete/CoinGeckoClient'
+import { BitcoinClientChain } from '../abstract/BitcoinClientChain'
 
 export class CoinGeckoChain extends BitcoinClientChain {
-    constructor(binanceClient? : CoinGeckoClient) {
+    constructor(binanceClient?: CoinGeckoClient) {
         if (binanceClient !== undefined) {
             super(binanceClient)
         } else {

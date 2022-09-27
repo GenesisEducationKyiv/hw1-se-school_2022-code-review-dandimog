@@ -1,8 +1,8 @@
 import { AxiosResponse } from 'axios'
-import { BtcClientEnum } from '../../../config'
-import { BitcoinClientFactory } from '../../factories/BitcoinClientFactory'
-import { CoinMarketCapFactory } from '../../factories/CoinMarketCapFactory'
-import { BitcoinClient } from './BitcoinClient'
+import { BtcClientEnum } from '../../../../config'
+import { BitcoinClientFactory } from '../../../factories/BitcoinClientFactory'
+import { CoinMarketCapFactory } from '../../../factories/CoinMarketCapFactory'
+import { BitcoinClient } from '../abstract/BitcoinClient'
 
 export class CoinMarketCapClient extends BitcoinClient {
     API_URL = 'https://pro-api.coinmarketcap.com/v2/tools/price-conversion?amount=1&symbol=BTC&convert=UAH'
@@ -13,7 +13,7 @@ export class CoinMarketCapClient extends BitcoinClient {
         BitcoinClientFactory.registerFactory(BtcClientEnum.COIN_MARKET, new CoinMarketCapFactory())
     }
 
-    retrieveRateFromResponse(result: AxiosResponse): number {
-        return result.data.data[0].quote.UAH.price
+    retrieveRateFromResponse(response: AxiosResponse["data"]): number {
+        return response.data.data[0].quote.UAH.price
     }
 }

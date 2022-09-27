@@ -1,15 +1,11 @@
-import { injectable, inject } from "inversify-props"
-import { IEmailService } from "./IEmailService"
-import { ICryptoRepository } from "../repositories/ICryptoRepository"
-import Mail from "nodemailer/lib/mailer"
-import { Transporter }  from "nodemailer"
+import { IEmailService } from './IEmailService'
+import { IEmailRepository } from '../../repositories/IEmailRepository'
+import Mail from 'nodemailer/lib/mailer'
+import { Transporter } from 'nodemailer'
 
-
-@injectable()
 export class EmailService implements IEmailService {
-
     constructor(
-        private repository: ICryptoRepository, 
+        private repository: IEmailRepository,
         private transporter: Transporter
     ) {}
 
@@ -17,7 +13,10 @@ export class EmailService implements IEmailService {
         try {
             return this.repository.getAllEmails()
         } catch (err) {
-            console.log(`An error occurred while trying to get all emails.`, err)
+            console.log(
+                `An error occurred while trying to get all emails.`,
+                err
+            )
             throw err
         }
     }
@@ -34,9 +33,14 @@ export class EmailService implements IEmailService {
         }
     }
 
-    public sendRateToSubcribers(rate: number, subscribers: Array<string>): void {
+    public sendRateToSubcribers(
+        rate: number,
+        subscribers: Array<string>
+    ): void {
         try {
-            subscribers.forEach((email : string) => this.transporter.sendMail(this.fillEmailTemplate(email, rate)))
+            subscribers.forEach((email: string) =>
+                this.transporter.sendMail(this.fillEmailTemplate(email, rate))
+            )
         } catch (err) {
             console.log(
                 'An error occurred while trying to broadcast the Bitcoin rate to subscribers.',

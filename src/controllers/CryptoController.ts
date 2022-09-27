@@ -1,25 +1,27 @@
-import { ValidationService } from "../services/ValidationService"
+import { ValidationService } from '../services/validation/ValidationService'
 import { Request, Response } from 'express'
-import { IBitcoinClient } from "../services/clients/IBitcoinClient"
-import { IEmailService } from "../services/IEmailService"
-import { ICryptoController } from "./ICryptoController"
+import { IBitcoinClient } from '../services/clients/abstract/IBitcoinClient'
+import { IEmailService } from '../services/email/IEmailService'
+import { ICryptoController } from './ICryptoController'
 
 export class CryptoController implements ICryptoController {
     constructor(
         public bitcoinClient: IBitcoinClient,
         public emailService: IEmailService,
         public emailValidator: ValidationService
-
     ) {}
 
     public getBitcoinRate = async (request: Request, response: Response) => {
         try {
-            const result : number = await this.bitcoinClient.getBitcoinRate()
-            response.status(200).json({ bitcoinRate : result.toString() + ' UAH' })
+            const result: number = await this.bitcoinClient.getBitcoinRate()
+            response
+                .status(200)
+                .json({ bitcoinRate: result.toString() + ' UAH' })
         } catch (err) {
             console.log(err)
-            response.status(500).json({ error : 'An Internal Server Error occurred while trying to get the Bitcoin rate.' })
-
+            response
+                .status(500)
+                .json({ error: 'An Internal Server Error occurred while trying to get the Bitcoin rate.' })
         }
     }
 
@@ -38,21 +40,24 @@ export class CryptoController implements ICryptoController {
             response.status(200).end()
         } catch (err) {
             console.log(err)
-            response.status(500).json({ error : 'An Internal Server Error occurred while trying to subscribe the provided email.' })
+            response
+                .status(500)
+                .json({ error: 'An Internal Server Error occurred while trying to subscribe the provided email.' })
         }
     }
 
-    public sendRateToSubcribers = async (request : Request, response : Response) => {
-
+    public sendRateToSubcribers = async (request: Request, response: Response) => {
         try {
-            const bitcoinRate : number = await this.bitcoinClient.getBitcoinRate()
-            const emails : Array<string> = this.emailService.getAllEmails()
+            const bitcoinRate: number = await this.bitcoinClient.getBitcoinRate()
+            const emails: Array<string> = this.emailService.getAllEmails()
             console.log(bitcoinRate)
             this.emailService.sendRateToSubcribers(bitcoinRate, emails)
             response.status(200).end()
         } catch (err) {
             console.log(err)
-            response.status(500).json({ error : 'An Internal Server Error occurred while trying to broadcast the Bitcoin rate to subscribers.' })
+            response
+                .status(500)
+                .json({ error: 'An Internal Server Error occurred while trying to broadcast the Bitcoin rate to subscribers.' })
         }
     }
 }

@@ -1,5 +1,5 @@
-import { BitcoinClient } from "../services/clients/BitcoinClient";
-import { CoinGeckoClient } from "../services/clients/CoinGeckoClient";
+import { BitcoinClient } from "../services/clients/abstract/BitcoinClient";
+import { CoinGeckoClient } from "../services/clients/concrete/CoinGeckoClient";
 import { BitcoinClientFactory } from "./BitcoinClientFactory";
 
 export class CoinGeckoFactory extends BitcoinClientFactory {

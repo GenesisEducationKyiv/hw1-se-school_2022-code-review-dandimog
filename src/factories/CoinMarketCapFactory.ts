@@ -1,5 +1,5 @@
-import { BitcoinClient } from "../services/clients/BitcoinClient";
-import { CoinMarketCapClient } from "../services/clients/CoinMarketCapClient";
+import { BitcoinClient } from "../services/clients/abstract/BitcoinClient";
+import { CoinMarketCapClient } from "../services/clients/concrete/CoinMarketCapClient";
 import { BitcoinClientFactory } from "./BitcoinClientFactory";
 
 export class CoinMarketCapFactory extends BitcoinClientFactory {

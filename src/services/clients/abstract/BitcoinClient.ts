@@ -5,22 +5,18 @@ export abstract class BitcoinClient implements IBitcoinClient {
     abstract API_URL: string
     public API_KEY_NAME?: string
     public API_KEY_VALUE?: string
-
-    async getBitcoinRate(): Promise<number> {
-        try {
+    
+    getBitcoinRate(): AxiosResponse["data"] {
             const headers =
                 (this.API_KEY_NAME !== undefined && this.API_KEY_VALUE !== undefined) ?
                     ({ headers: { [this.API_KEY_NAME]: this.API_KEY_VALUE } } as AxiosRequestConfig) :
                     undefined
-            const result: AxiosResponse = await axios.get(this.API_URL, headers)
-            return this.retrieveRateFromResponse(result)
-        } catch (err) {
-            console.log(
-                'An error occurred while trying to get the Bitcoin rate.',
-                err
-            )
-            throw err
-        }
+            return axios.get(this.API_URL, headers)
+                .then(response => response.data)
+                .catch(error => {
+                    console.log('An error occurred while trying to get the Bitcoin rate.', error)
+                    throw error
+                })
     }
 
     abstract retrieveRateFromResponse(result: AxiosResponse): number

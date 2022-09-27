@@ -1,6 +1,6 @@
-import { ICryptoRepository } from './ICryptoRepository'
+import { IEmailRepository } from './IEmailRepository'
 import fs from 'fs'
-export class CryptoRepository implements ICryptoRepository {
+export class EmailRepository implements IEmailRepository {
     databasePath: string
 
     constructor() {
@@ -31,7 +31,10 @@ export class CryptoRepository implements ICryptoRepository {
             const json = JSON.parse(data.toString())
             return json.emails
         } catch (err) {
-            console.log('An error occurred while trying to get all the emails from the database.', err)
+            console.log(
+                'An error occurred while trying to get all the emails from the database.',
+                err
+            )
             throw err
         }
     }

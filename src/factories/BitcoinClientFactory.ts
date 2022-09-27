@@ -1,5 +1,5 @@
 import { BtcClientEnum } from '../../config'
-import { BitcoinClient } from '../services/clients/BitcoinClient'
+import { BitcoinClient } from '../services/clients/abstract/BitcoinClient'
 
 export abstract class BitcoinClientFactory {
     public static btcFactories: Map<BtcClientEnum, BitcoinClientFactory> = new Map<BtcClientEnum, BitcoinClientFactory>()

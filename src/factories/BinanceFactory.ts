@@ -1,5 +1,5 @@
-import { BinanceClient } from "../services/clients/BinanceClient";
-import { BitcoinClient } from "../services/clients/BitcoinClient";
+import { BinanceClient } from "../services/clients/concrete/BinanceClient";
+import { BitcoinClient } from "../services/clients/abstract/BitcoinClient";
 import { BitcoinClientFactory } from "./BitcoinClientFactory";
 
 export class BinanceFactory extends BitcoinClientFactory {
