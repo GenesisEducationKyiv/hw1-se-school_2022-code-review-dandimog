@@ -1,8 +1,8 @@
 import { AxiosResponse } from 'axios'
 import { BitcoinClientFactory } from '../../../factories/abstract/BitcoinClientFactory'
 import { BitcoinClient } from '../abstract/BitcoinClient'
-import { BtcClientEnum } from '../../../../config'
 import { CoinGeckoFactory } from '../../../factories/concrete/CoinGeckoFactory'
+import { BtcClientEnum } from '../../../models/BtcClientEnum'
 
 export class CoinGeckoClient extends BitcoinClient {
 

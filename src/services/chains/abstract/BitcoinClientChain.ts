@@ -19,17 +19,14 @@ export class BitcoinClientChain extends BitcoinClient implements Chainable {
         return nextChain
     }
 
-    getBitcoinRate(): Promise<number> {
+    getBitcoinRate(): number {
         try {
             return this.bitcoinClient.getBitcoinRate()
         } catch (err) {
             if (this.nextChain) {
                 return this.nextChain.getBitcoinRate()
             } else {
-                console.log(
-                    'An error occured while trying to get the Bitcoin rate.',
-                    err
-                )
+                console.log('An error occured while trying to get the Bitcoin rate.', err)
                 throw err
             }
         }

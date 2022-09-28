@@ -6,13 +6,15 @@ import { IEmailRepository } from './repositories/email/IEmailRepository'
 import { EmailService } from './services/email/EmailService'
 import { IEmailService } from './services/email/IEmailService'
 import nodemailer from 'nodemailer'
-import { BtcClientEnum, config } from '../config'
+import { config } from '../config'
 import SMTPTransport from 'nodemailer/lib/smtp-transport'
 import { ValidationService } from './services/validation/ValidationService'
 import { BitcoinClientChain } from './services/chains/abstract/BitcoinClientChain'
 import { BitcoinClientFactory } from './factories/abstract/BitcoinClientFactory'
 import { BinanceClient } from './services/clients/concrete/BinanceClient'
 import { CoinApiClient } from './services/clients/concrete/CoinApiClient'
+import { ErrorHandler } from './models/erors/ErrorHandler'
+import { BtcClientEnum } from './models/BtcClientEnum'
 
 const transporter: Transporter = nodemailer.createTransport(config.transporter as SMTPTransport.Options)
 
@@ -34,9 +36,11 @@ const repository: IEmailRepository = new EmailRepository()
 
 const emailService: IEmailService = new EmailService(repository, transporter)
 const validationService: ValidationService = new ValidationService()
+const errorHandler: ErrorHandler = new ErrorHandler()
 
 export const controller: ICryptoController = new CryptoController(
     binanceChain,
     emailService,
-    validationService
+    validationService,
+    errorHandler
 )

@@ -6,7 +6,7 @@ const MILISECONDS_IN_ONE_SECOND = 1000
 
 export class BtcRateCachingProxy extends BitcoinClient {
 
-    private cachedRate?: Promise<number>
+    private cachedRate?: number
     private lastFetchDate?: Date
     private timeToLiveInMs: number
 
@@ -37,7 +37,7 @@ export class BtcRateCachingProxy extends BitcoinClient {
         return this.lastFetchDate.getTime() + this.timeToLiveInMs > new Date().getTime()
     }
 
-    getBitcoinRate(): Promise<number> {
+    getBitcoinRate(): number {
         try {
             if (
                 !this.cachedRate ||
@@ -51,10 +51,7 @@ export class BtcRateCachingProxy extends BitcoinClient {
                 return this.cachedRate
             }
         } catch (err) {
-            console.log(
-                'An error occured while trying to get the Bitcoin rate.',
-                err
-            )
+            console.log('An error occured while trying to get the Bitcoin rate.', err)
             throw err
         }
     }

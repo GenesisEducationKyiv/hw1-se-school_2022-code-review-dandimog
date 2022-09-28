@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios'
-import { BtcClientEnum } from '../../../../config'
 import { BitcoinClientFactory } from '../../../factories/abstract/BitcoinClientFactory'
 import { CoinMarketCapFactory } from '../../../factories/concrete/CoinMarketCapFactory'
+import { BtcClientEnum } from '../../../models/BtcClientEnum'
 import { BitcoinClient } from '../abstract/BitcoinClient'
 
 export class CoinMarketCapClient extends BitcoinClient {

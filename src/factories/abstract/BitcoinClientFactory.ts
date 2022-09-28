@@ -1,4 +1,4 @@
-import { BtcClientEnum } from '../../../config'
+import { BtcClientEnum } from '../../models/BtcClientEnum'
 import { BitcoinClient } from '../../services/clients/abstract/BitcoinClient'
 
 export abstract class BitcoinClientFactory {

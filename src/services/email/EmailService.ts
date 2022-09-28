@@ -13,10 +13,7 @@ export class EmailService implements IEmailService {
         try {
             return this.repository.getAllEmails()
         } catch (err) {
-            console.log(
-                `An error occurred while trying to get all emails.`,
-                err
-            )
+            console.log(`An error occurred while trying to get all emails.`, err)
             throw err
         }
     }
@@ -25,10 +22,7 @@ export class EmailService implements IEmailService {
         try {
             this.repository.saveEmail(email)
         } catch (err) {
-            console.log(
-                `An error occurred while trying to save the "${email}" email.`,
-                err
-            )
+            console.log(`An error occurred while trying to save the "${email}" email.`, err)
             throw err
         }
     }
@@ -42,10 +36,7 @@ export class EmailService implements IEmailService {
                 this.transporter.sendMail(this.fillEmailTemplate(email, rate))
             )
         } catch (err) {
-            console.log(
-                'An error occurred while trying to broadcast the Bitcoin rate to subscribers.',
-                err
-            )
+            console.log('An error occurred while trying to broadcast the Bitcoin rate to subscribers.', err)
         }
     }
 
