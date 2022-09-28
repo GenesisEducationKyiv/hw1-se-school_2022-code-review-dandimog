@@ -1,22 +1,24 @@
 import { ValidationService } from '../services/validation/ValidationService'
 import { Request, Response } from 'express'
-import { IBitcoinClient } from '../services/clients/abstract/IBitcoinClient'
+import { BitcoinClient } from '../services/clients/abstract/BitcoinClient'
 import { IEmailService } from '../services/email/IEmailService'
 import { ICryptoController } from './ICryptoController'
+import { AxiosResponse } from 'axios'
 
 export class CryptoController implements ICryptoController {
     constructor(
-        public bitcoinClient: IBitcoinClient,
+        public bitcoinClient: BitcoinClient,
         public emailService: IEmailService,
         public emailValidator: ValidationService
     ) {}
 
     public getBitcoinRate = async (request: Request, response: Response) => {
         try {
-            const result: number = await this.bitcoinClient.getBitcoinRate()
+            const result: AxiosResponse["data"] = await this.bitcoinClient.getBitcoinRate()
+            const rate = this.bitcoinClient.retrieveRateFromResponse(result)
             response
                 .status(200)
-                .json({ bitcoinRate: result.toString() + ' UAH' })
+                .json({ bitcoinRate: rate.toString() + ' UAH' })
         } catch (err) {
             console.log(err)
             response

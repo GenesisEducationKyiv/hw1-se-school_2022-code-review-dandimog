@@ -1,5 +1,5 @@
 import { IEmailService } from './IEmailService'
-import { IEmailRepository } from '../../repositories/IEmailRepository'
+import { IEmailRepository } from '../../repositories/email/IEmailRepository'
 import Mail from 'nodemailer/lib/mailer'
 import { Transporter } from 'nodemailer'
 
