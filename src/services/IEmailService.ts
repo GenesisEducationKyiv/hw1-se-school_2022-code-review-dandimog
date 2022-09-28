@@ -1,4 +1,5 @@
 export interface IEmailService {
-    subscribeEmail(email: string): void
-    sendRateToSubcribers(): Promise<void>
+    getAllEmails() : Array<string>
+    subscribeEmail(email : string): void
+    sendRateToSubcribers(rate: number, subscribers: Array<string>): void
 }

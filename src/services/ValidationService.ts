@@ -1,4 +1,3 @@
-/* eslint-disable no-useless-escape */
 export class ValidationService {
     public isEmailValid(email: string): boolean {
         const emailRegex =

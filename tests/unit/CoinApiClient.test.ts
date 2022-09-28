@@ -1,16 +1,18 @@
-import { BitcoinService } from '../src/services/BitcoinService'
+import "reflect-metadata"
+import { BinanceClient } from "../../src/services/clients/BinanceClient"
 import axios, { AxiosResponse } from 'axios'
+import { BitcoinClient } from "../../src/services/clients/BitcoinClient"
 
 jest.mock('axios')
 
-const bitcoinService: BitcoinService = new BitcoinService()
+const bitcoinService: BitcoinClient = new BinanceClient()
 const bitcoinRate = 748545.816255
 
 afterEach(() => jest.clearAllMocks())
 
 describe('Testing the BitcoinService.getBitcoinRate().', () => {
     test('Should return Bitcoin rate on success.', async () => {
-        (axios.get as jest.Mock) = jest.fn(() =>
+        ;(axios.get as jest.Mock) = jest.fn(() =>
             Promise.resolve<AxiosResponse>({
                 status: 200,
                 statusText: 'OK',

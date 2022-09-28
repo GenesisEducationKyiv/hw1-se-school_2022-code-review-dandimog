@@ -3,4 +3,4 @@ node_modules
 build
 coverage
 Service.ts
-COntroller.ts
+Controller.ts

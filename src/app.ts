@@ -1,16 +1,20 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+require('dotenv').config()
 import express, { Express } from 'express'
 import bodyParser from 'body-parser'
-import * as dotenv from 'dotenv'
-import 'reflect-metadata'
+import "reflect-metadata"
+import { router } from './routes/Router'
+import { config } from '../config'
+import { initRoutes } from './routes/Router'
 import { controller } from './app.config'
 
-dotenv.config()
+initRoutes(controller)
 
-const PORT: number = parseInt(process.env.PORT as string) || 3000
+const port: number = config.app.port
 const app: Express = express()
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(controller.router)
+app.use(router)
 
-app.listen(PORT, () => console.log(`App listening on port: ${PORT}`))
+app.listen(port, () => console.log(`App listening on port: ${port}`))
