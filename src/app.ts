@@ -5,7 +5,7 @@ import 'reflect-metadata'
 import { router } from './routes/Router'
 import { config } from '../config'
 import { initRoutes } from './routes/Router'
-import { controller } from './dependencies.config'
+import { controller } from './init'
 
 initRoutes(controller)
 

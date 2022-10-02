@@ -1,11 +1,10 @@
-import { Transporter } from 'nodemailer'
+import nodemailer, { Transporter } from 'nodemailer'
 import { CryptoController } from './controllers/CryptoController'
 import { ICryptoController } from './controllers/ICryptoController'
 import { EmailRepository } from './repositories/email/EmailRepository'
 import { IEmailRepository } from './repositories/email/IEmailRepository'
 import { EmailService } from './services/email/EmailService'
 import { IEmailService } from './services/email/IEmailService'
-import nodemailer from 'nodemailer'
 import { config } from '../config'
 import SMTPTransport from 'nodemailer/lib/smtp-transport'
 import { ValidationService } from './services/validation/ValidationService'
@@ -32,7 +31,6 @@ const coinApiClient : BitcoinClient = BitcoinClientFactory.getClient(BtcClientEn
 binanceClient.setNext(coinApiClient)
 
 const repository: IEmailRepository = new EmailRepository()
-
 const emailService: IEmailService = new EmailService(repository, transporter)
 const validationService: ValidationService = new ValidationService()
 const errorHandler: ErrorHandler = new ErrorHandler()
