@@ -1,3 +1,3 @@
 export interface IBitcoinClient {
-    getBitcoinRate(): number
+    getBitcoinRate(): Promise<number>
 }

@@ -16,9 +16,9 @@ export class CryptoController implements ICryptoController {
         public errorHandler: ErrorHandler
     ) {}
 
-    public getBitcoinRate = (request: Request, response: Response) => {
+    public getBitcoinRate = async (request: Request, response: Response) => {
         try {
-            const rate: number = this.bitcoinClient.getBitcoinRate()
+            const rate: number = await this.bitcoinClient.getBitcoinRate()
             console.log(rate)
             response
                 .status(HttpStatus.OK)
@@ -49,9 +49,9 @@ export class CryptoController implements ICryptoController {
         }
     }
 
-    public sendRateToSubcribers = (request: Request, response: Response) => {
+    public sendRateToSubcribers = async (request: Request, response: Response) => {
         try {
-            const bitcoinRate: number = this.bitcoinClient.getBitcoinRate()
+            const bitcoinRate: number = await this.bitcoinClient.getBitcoinRate()
             const emails: Array<string> = this.emailService.getAllEmails()
             this.emailService.sendRateToSubcribers(bitcoinRate, emails)
             response.status(HttpStatus.OK).end()

@@ -9,28 +9,27 @@ import nodemailer from 'nodemailer'
 import { config } from '../config'
 import SMTPTransport from 'nodemailer/lib/smtp-transport'
 import { ValidationService } from './services/validation/ValidationService'
-import { BitcoinClientChain } from './services/chains/abstract/BitcoinClientChain'
 import { BitcoinClientFactory } from './factories/abstract/BitcoinClientFactory'
-import { BinanceClient } from './services/clients/concrete/BinanceClient'
-import { CoinApiClient } from './services/clients/concrete/CoinApiClient'
 import { ErrorHandler } from './models/erors/ErrorHandler'
 import { BtcClientEnum } from './models/BtcClientEnum'
+import { BinanceFactory } from './factories/concrete/BinanceFactory'
+import { CoinApiFactory } from './factories/concrete/CoinApiFactory'
+import { CoinGeckoFactory } from './factories/concrete/CoinGeckoFactory'
+import { CoinMarketCapFactory } from './factories/concrete/CoinMarketCapFactory'
+import { FactoryRegistrator } from './factories/abstract/FactoryRegistrator'
+import { BitcoinClient } from './services/clients/abstract/BitcoinClient'
 
 const transporter: Transporter = nodemailer.createTransport(config.transporter as SMTPTransport.Options)
 
-const binance: BinanceClient = new BinanceClient()
-const coinApi: CoinApiClient = new CoinApiClient()
+FactoryRegistrator.registerFactory(BtcClientEnum.BINANCE, new BinanceFactory())
+FactoryRegistrator.registerFactory(BtcClientEnum.COIN_API, new CoinApiFactory())
+FactoryRegistrator.registerFactory(BtcClientEnum.COIN_GECKO, new CoinGeckoFactory())
+FactoryRegistrator.registerFactory(BtcClientEnum.COIN_MARKET, new CoinMarketCapFactory())
 
-const binanceClient : BinanceClient = 
-    BitcoinClientFactory.getClient(BtcClientEnum.BINANCE)
+const binanceClient : BitcoinClient = BitcoinClientFactory.getClient(BtcClientEnum.BINANCE)
+const coinApiClient : BitcoinClient = BitcoinClientFactory.getClient(BtcClientEnum.COIN_API)
 
-const coinApiClient : CoinApiClient = 
-    BitcoinClientFactory.getClient(BtcClientEnum.COIN_API)
-
-const binanceChain: BitcoinClientChain = new BitcoinClientChain(binanceClient)
-const coinApiChain: BitcoinClientChain = new BitcoinClientChain(coinApiClient)
-
-binanceChain.setNext(coinApiChain)
+binanceClient.setNext(coinApiClient)
 
 const repository: IEmailRepository = new EmailRepository()
 
@@ -39,7 +38,7 @@ const validationService: ValidationService = new ValidationService()
 const errorHandler: ErrorHandler = new ErrorHandler()
 
 export const controller: ICryptoController = new CryptoController(
-    binanceChain,
+    binanceClient,
     emailService,
     validationService,
     errorHandler

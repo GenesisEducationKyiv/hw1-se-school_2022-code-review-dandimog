@@ -1,27 +1,34 @@
-import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
+import { HttpException } from '../../../models/erors/HttpException'
+import { HttpStatus } from '../../../models/erors/HttpStatus'
+import { Chainable } from '../../chains/Chainable'
 import { IBitcoinClient } from './IBitcoinClient'
 
-export abstract class BitcoinClient implements IBitcoinClient {
-    abstract API_URL: string
-    public API_KEY_NAME?: string
-    public API_KEY_VALUE?: string
+export abstract class BitcoinClient implements IBitcoinClient, Chainable {
 
-    public async getBitcoinResponse(): Promise<AxiosResponse["data"]> {
-        const headers =
-            (this.API_KEY_NAME !== undefined && this.API_KEY_VALUE !== undefined) ?
-                ({ headers: { [this.API_KEY_NAME]: this.API_KEY_VALUE } } as AxiosRequestConfig) :
-                undefined
-        try {
-            return await axios.get(this.API_URL, headers)
-        } catch (err) {
-            console.log('An error occurred while trying to get the Bitcoin rate.', err)
-            throw err
+    private next?: BitcoinClient
+
+    constructor(
+        protected API_URL: string,
+        protected API_KEY_NAME?: string,
+        protected API_KEY_VALUE?: string
+    ) {}
+    
+    public async getBitcoinRate(): Promise<number> {
+
+        if (this.next) {
+            return this.next.getBitcoinRate()
         }
+
+        throw new HttpException(
+            HttpStatus.NOT_FOUND, 
+            'No Bitcoin provider which could handle your request was found.'
+        )
+
+    }
+
+    public setNext(next: BitcoinClient): Chainable {
+        this.next = next
+        return next
     }
     
-    public getBitcoinRate(): number {
-        return 111000
-    }
-
-    public abstract retrieveRateFromResponse(result: AxiosResponse["data"]): number
 }
