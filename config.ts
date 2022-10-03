@@ -1,4 +1,8 @@
 export const config = {
+    app: {
+        port: parseInt(process.env.PORT as string) ?? 3000,
+        response_content_type: process.env.RESPONSE_CONTENT_TYPE ?? 'application/json'
+    },
     transporter: {
         port: 465,
         host: 'smtp.gmail.com',
@@ -12,8 +16,7 @@ export const config = {
             refreshToken: process.env.REFRESH_TOKEN,
         },
     },
-    app: {
-        port: parseInt(process.env.PORT as string) ?? 3000,
-        response_content_type: process.env.RESPONSE_CONTENT_TYPE ?? 'application/json'
+    logger: {
+        destination: 'src/resources/logs/AxiosResponseLogs.log'
     }
 }

@@ -1,9 +1,11 @@
+import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { HttpException } from '../../models/erorrs/HttpException'
 import { HttpStatus } from '../../models/erorrs/HttpStatus'
 import { BitcoinClient } from '../clients/abstract/BitcoinClient'
 
 const SECONDS_IN_ONE_MINUTE = 60
 const MILISECONDS_IN_ONE_SECOND = 1000
+const CACHE_EXPIRATION_LIFETIME_IN_MINS = 5
 
 export class BitcoinCachingProxy extends BitcoinClient {
 
@@ -16,6 +18,7 @@ export class BitcoinCachingProxy extends BitcoinClient {
         private minutesToLive?: number
     ) {
         super(
+            bitcoinClient.NAME,
             bitcoinClient.API_URL, 
             bitcoinClient.API_KEY_NAME, 
             bitcoinClient.API_KEY_VALUE
@@ -26,7 +29,9 @@ export class BitcoinCachingProxy extends BitcoinClient {
                 minutesToLive * SECONDS_IN_ONE_MINUTE * MILISECONDS_IN_ONE_SECOND
         } else {
             this.timeToLiveInMs =
-                5 * SECONDS_IN_ONE_MINUTE * MILISECONDS_IN_ONE_SECOND
+                CACHE_EXPIRATION_LIFETIME_IN_MINS * 
+                SECONDS_IN_ONE_MINUTE * 
+                MILISECONDS_IN_ONE_SECOND
         }
     }
 
@@ -37,9 +42,6 @@ export class BitcoinCachingProxy extends BitcoinClient {
 
     public async getBitcoinRate(): Promise<number> {
         try {
-            console.log(this.cachedRate)
-            console.log(this.lastFetchDate)
-            console.log(this.isCachedRateValid())
             if (
                 !this.cachedRate ||
                 !this.lastFetchDate ||
@@ -56,6 +58,14 @@ export class BitcoinCachingProxy extends BitcoinClient {
                 'An error occured while trying to get the Bitcoin rate.'
             )
         }
+    }
+
+    public buildAxiosRequest(): AxiosRequestConfig {
+        return this.bitcoinClient.buildAxiosRequest()
+    }
+
+    public retrieveRateFromResponse(response: AxiosResponse["data"]): number {
+        return this.bitcoinClient.retrieveRateFromResponse(response)
     }
 
 }

@@ -18,6 +18,7 @@ import { CoinMarketCapFactory } from './factories/concrete/CoinMarketCapFactory'
 import { FactoryRegistrator } from './factories/abstract/FactoryRegistrator'
 import { BitcoinClient } from './services/clients/abstract/BitcoinClient'
 import { BitcoinCachingProxy } from './services/proxies/BitcoinCachingProxy'
+import { BitcoinLoggingDecorator } from './services/decorators/BitcoinLoggingDecorator'
 
 const transporter: Transporter = nodemailer.createTransport(config.transporter as SMTPTransport.Options)
 
@@ -31,7 +32,8 @@ const coinApiClient : BitcoinClient = BitcoinClientFactory.getClient(BtcClientEn
 
 binanceClient.setNext(coinApiClient)
 
-const bitcoinCachingProxy: BitcoinCachingProxy = new BitcoinCachingProxy(binanceClient)
+const bitcoinLoggingDecorator: BitcoinLoggingDecorator = new BitcoinLoggingDecorator(binanceClient)
+const bitcoinCachingProxy: BitcoinCachingProxy = new BitcoinCachingProxy(bitcoinLoggingDecorator)
 
 const repository: IEmailRepository = new EmailRepository()
 const emailService: IEmailService = new EmailService(repository, transporter)
