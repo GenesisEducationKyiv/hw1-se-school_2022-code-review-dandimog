@@ -8,9 +8,9 @@ export abstract class BitcoinClient implements IBitcoinClient, Chainable {
     private next?: BitcoinClient
 
     constructor(
-        protected API_URL: string,
-        protected API_KEY_NAME?: string,
-        protected API_KEY_VALUE?: string
+        public API_URL: string,
+        public API_KEY_NAME?: string,
+        public API_KEY_VALUE?: string
     ) {}
     
     public async getBitcoinRate(): Promise<number> {

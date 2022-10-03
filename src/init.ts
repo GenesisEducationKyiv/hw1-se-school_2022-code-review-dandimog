@@ -17,6 +17,7 @@ import { CoinGeckoFactory } from './factories/concrete/CoinGeckoFactory'
 import { CoinMarketCapFactory } from './factories/concrete/CoinMarketCapFactory'
 import { FactoryRegistrator } from './factories/abstract/FactoryRegistrator'
 import { BitcoinClient } from './services/clients/abstract/BitcoinClient'
+import { BitcoinCachingProxy } from './services/proxies/BitcoinCachingProxy'
 
 const transporter: Transporter = nodemailer.createTransport(config.transporter as SMTPTransport.Options)
 
@@ -30,13 +31,15 @@ const coinApiClient : BitcoinClient = BitcoinClientFactory.getClient(BtcClientEn
 
 binanceClient.setNext(coinApiClient)
 
+const bitcoinCachingProxy: BitcoinCachingProxy = new BitcoinCachingProxy(binanceClient)
+
 const repository: IEmailRepository = new EmailRepository()
 const emailService: IEmailService = new EmailService(repository, transporter)
 const validationService: ValidationService = new ValidationService()
 const errorHandler: ErrorHandler = new ErrorHandler()
 
 export const controller: ICryptoController = new CryptoController(
-    binanceClient,
+    bitcoinCachingProxy,
     emailService,
     validationService,
     errorHandler
