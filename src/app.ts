@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 require('dotenv').config()
 import express, { Express } from 'express'
 import bodyParser from 'body-parser'
-import "reflect-metadata"
+import 'reflect-metadata'
 import { router } from './routes/Router'
 import { config } from '../config'
 import { initRoutes } from './routes/Router'
-import { controller } from './app.config'
+import { controller } from './init'
 
 initRoutes(controller)
 

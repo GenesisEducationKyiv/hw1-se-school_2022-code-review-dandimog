@@ -1,25 +1,32 @@
-import { ValidationService } from "../services/ValidationService"
+import { ValidationService } from '../services/validation/ValidationService'
 import { Request, Response } from 'express'
-import { IBitcoinClient } from "../services/clients/IBitcoinClient"
-import { IEmailService } from "../services/IEmailService"
-import { ICryptoController } from "./ICryptoController"
+import { BitcoinClient } from '../services/clients/abstract/BitcoinClient'
+import { IEmailService } from '../services/email/IEmailService'
+import { ICryptoController } from './ICryptoController'
+import { ErrorHandler } from '../services/handlers/ErrorHandler'
+import { HttpException } from '../models/erorrs/HttpException'
+import { HttpStatus } from '../models/erorrs/HttpStatus'
+import { config } from '../../config'
 
 export class CryptoController implements ICryptoController {
     constructor(
-        public bitcoinClient: IBitcoinClient,
+        public bitcoinClient: BitcoinClient,
         public emailService: IEmailService,
-        public emailValidator: ValidationService
-
+        public emailValidator: ValidationService,
+        public errorHandler: ErrorHandler
     ) {}
 
     public getBitcoinRate = async (request: Request, response: Response) => {
         try {
-            const result : number = await this.bitcoinClient.getBitcoinRate()
-            response.status(200).json({ bitcoinRate : result.toString() + ' UAH' })
-        } catch (err) {
+            const rate: number = await this.bitcoinClient.getBitcoinRate()
+            console.log(rate)
+            response
+                .status(HttpStatus.OK)
+                .header("Content-Type", config.app.response_content_type)
+                .send({ bitcoinRate: rate.toString() + ' UAH' })
+        } catch (err: unknown) {
             console.log(err)
-            response.status(500).json({ error : 'An Internal Server Error occurred while trying to get the Bitcoin rate.' })
-
+            this.errorHandler.handlerError(err, response)
         }
     }
 
@@ -27,32 +34,30 @@ export class CryptoController implements ICryptoController {
         const email: string = request.body.email
 
         if (!email || !this.emailValidator.isEmailValid(email)) {
-            response.status(400).json({
-                error: "Invalid format. Please provide the request containing a valid 'email' field.",
-            })
+            const err: HttpException = 
+                new HttpException(HttpStatus.BAD_REQUEST, "Invalid format. Please provide the request containing a valid 'email' field.")
+            this.errorHandler.handlerError(err, response)
             return
         }
 
         try {
             this.emailService.subscribeEmail(email)
-            response.status(200).end()
-        } catch (err) {
+            response.status(HttpStatus.OK).end()
+        } catch (err: unknown) {
             console.log(err)
-            response.status(500).json({ error : 'An Internal Server Error occurred while trying to subscribe the provided email.' })
+            this.errorHandler.handlerError(err, response)
         }
     }
 
-    public sendRateToSubcribers = async (request : Request, response : Response) => {
-
+    public sendRateToSubcribers = async (request: Request, response: Response) => {
         try {
-            const bitcoinRate : number = await this.bitcoinClient.getBitcoinRate()
-            const emails : Array<string> = this.emailService.getAllEmails()
-            console.log(bitcoinRate)
+            const bitcoinRate: number = await this.bitcoinClient.getBitcoinRate()
+            const emails: Array<string> = this.emailService.getAllEmails()
             this.emailService.sendRateToSubcribers(bitcoinRate, emails)
-            response.status(200).end()
-        } catch (err) {
+            response.status(HttpStatus.OK).end()
+        } catch (err: unknown) {
             console.log(err)
-            response.status(500).json({ error : 'An Internal Server Error occurred while trying to broadcast the Bitcoin rate to subscribers.' })
+            this.errorHandler.handlerError(err, response)
         }
     }
 }
