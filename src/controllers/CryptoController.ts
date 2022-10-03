@@ -3,9 +3,9 @@ import { Request, Response } from 'express'
 import { BitcoinClient } from '../services/clients/abstract/BitcoinClient'
 import { IEmailService } from '../services/email/IEmailService'
 import { ICryptoController } from './ICryptoController'
-import { ErrorHandler } from '../models/erors/ErrorHandler'
-import { HttpException } from '../models/erors/HttpException'
-import { HttpStatus } from '../models/erors/HttpStatus'
+import { ErrorHandler } from '../services/handlers/ErrorHandler'
+import { HttpException } from '../models/erorrs/HttpException'
+import { HttpStatus } from '../models/erorrs/HttpStatus'
 import { config } from '../../config'
 
 export class CryptoController implements ICryptoController {

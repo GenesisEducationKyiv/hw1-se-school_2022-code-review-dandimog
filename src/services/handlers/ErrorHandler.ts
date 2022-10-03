@@ -1,6 +1,6 @@
-import { HttpException } from "./HttpException";
+import { HttpException } from "../../models/erorrs/HttpException";
 import { Response } from 'express'
-import { HttpStatus } from "./HttpStatus";
+import { HttpStatus } from "../../models/erorrs/HttpStatus";
 import { config } from "../../../config";
 
 export class ErrorHandler {

@@ -1,5 +1,5 @@
-import { HttpException } from '../../../models/erors/HttpException'
-import { HttpStatus } from '../../../models/erors/HttpStatus'
+import { HttpException } from '../../../models/erorrs/HttpException'
+import { HttpStatus } from '../../../models/erorrs/HttpStatus'
 import { Chainable } from '../../chains/Chainable'
 import { IBitcoinClient } from './IBitcoinClient'
 
