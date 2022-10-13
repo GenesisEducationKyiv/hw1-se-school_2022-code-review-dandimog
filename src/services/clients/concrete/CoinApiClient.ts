@@ -1,30 +1,19 @@
 import { BitcoinClient } from './../abstract/BitcoinClient'
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { BtcClientEnum } from '../../../models/BtcClientEnum'
 
 export class CoinApiClient extends BitcoinClient {
 
     constructor() {
         super(
+            BtcClientEnum.COIN_API,
             'https://rest.coinapi.io/v1/exchangerate/BTC/UAH',
             'X-CoinAPI-Key',
             process.env.COIN_API_KEY
         )
     }
 
-    public async getBitcoinRate(): Promise<number> {
-        try {
-            return this.retrieveRateFromResponse(await this.getAxiosResponseData())
-        } catch(err) {
-            console.log(err)
-            return super.getBitcoinRate()
-        }
-    }
-
-    private async getAxiosResponseData(): Promise<AxiosResponse["data"]> {
-        return (await axios.get(this.API_URL, this.buildAxiosRequest())).data
-    }
-
-    private buildAxiosRequest(): AxiosRequestConfig {
+    public buildAxiosRequest(): AxiosRequestConfig {
         const headers =
             (this.API_KEY_NAME !== undefined && this.API_KEY_VALUE !== undefined) ?
                 ({ headers: { [this.API_KEY_NAME]: this.API_KEY_VALUE } }) :
@@ -32,7 +21,7 @@ export class CoinApiClient extends BitcoinClient {
         return headers as AxiosRequestConfig
     }
 
-    private retrieveRateFromResponse(response: AxiosResponse["data"]): number {
+    public retrieveRateFromResponse(response: AxiosResponse["data"]): number {
         return response.rate
     }
     

@@ -19,7 +19,6 @@ export class CryptoController implements ICryptoController {
     public getBitcoinRate = async (request: Request, response: Response) => {
         try {
             const rate: number = await this.bitcoinClient.getBitcoinRate()
-            console.log(rate)
             response
                 .status(HttpStatus.OK)
                 .header("Content-Type", config.app.response_content_type)
