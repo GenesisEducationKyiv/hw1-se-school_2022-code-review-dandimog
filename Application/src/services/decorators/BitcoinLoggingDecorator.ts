@@ -7,7 +7,9 @@ import { AxiosRequestConfig, AxiosResponse } from "axios"
 
 export class BitcoinLoggingDecorator extends BitcoinClient {
     
-    constructor(private bitcoinClient: BitcoinClient) {
+    constructor(
+        private bitcoinClient: BitcoinClient
+    ) {
         super(
             bitcoinClient.NAME,
             bitcoinClient.API_URL, 
@@ -27,8 +29,8 @@ export class BitcoinLoggingDecorator extends BitcoinClient {
         } catch(err) {
             console.log(err)
             throw new HttpException(
-                HttpStatus.BAD_REQUEST, 
-                'An error occured while trying to get th Bitcoin rate.'
+                HttpStatus.INTERNAL_SERVER_ERROR, 
+                'An error occured while trying to get the Bitcoin rate.'
             )
         }
     }

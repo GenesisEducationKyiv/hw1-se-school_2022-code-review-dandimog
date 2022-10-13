@@ -19,6 +19,9 @@ import { FactoryRegistrator } from './factories/abstract/FactoryRegistrator'
 import { BitcoinClient } from './services/clients/abstract/BitcoinClient'
 import { BitcoinCachingProxy } from './services/proxies/BitcoinCachingProxy'
 import { BitcoinLoggingDecorator } from './services/decorators/BitcoinLoggingDecorator'
+import { MessageBrokerDecorator } from './services/decorators/MessageBrokerDecorator'
+import { IPublisher } from './services/publisher/IPublisher'
+import { RabbitMQPublisher } from './services/publisher/RabbitMQPublisher'
 
 const transporter: Transporter = nodemailer.createTransport(config.transporter as SMTPTransport.Options)
 
@@ -32,8 +35,11 @@ const coinApiClient : BitcoinClient = BitcoinClientFactory.getClient(BtcClientEn
 
 binanceClient.setNext(coinApiClient)
 
+const publisher: IPublisher = new RabbitMQPublisher()
+
 const bitcoinLoggingDecorator: BitcoinLoggingDecorator = new BitcoinLoggingDecorator(binanceClient)
-const bitcoinCachingProxy: BitcoinCachingProxy = new BitcoinCachingProxy(bitcoinLoggingDecorator)
+const messageBrokerDecorator: MessageBrokerDecorator = new MessageBrokerDecorator(bitcoinLoggingDecorator, publisher)
+const bitcoinCachingProxy: BitcoinCachingProxy = new BitcoinCachingProxy(messageBrokerDecorator, 0.2)
 
 const repository: IEmailRepository = new EmailRepository()
 const emailService: IEmailService = new EmailService(repository, transporter)
