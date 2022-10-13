@@ -11,7 +11,3 @@ The application has several options of third-party libraries you can use to choo
 -   https://www.coinapi.io/
 -   https://api.coingecko.com
 -   https://pro-api.coinmarketcap.com
-
-## UML Diagram of Chain of Responsability patterns implementation
-
-![Chain of Responsability](src/resources//images/Chain%20of%20Responsibility%20UML.jpg)
