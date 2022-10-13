@@ -1,6 +1,8 @@
 ## Docker
 
-docker compose up
+````
+$ docker compose up
+````
 
 ## Additional Information
 
