@@ -4,6 +4,7 @@ import Mail from 'nodemailer/lib/mailer'
 import { Transporter } from 'nodemailer'
 import { HttpException } from '../../models/erorrs/HttpException'
 import { HttpStatus } from '../../models/erorrs/HttpStatus'
+import { logger } from '../loggers/concrete/FileLogger'
 
 export class EmailService implements IEmailService {
     constructor(
@@ -15,7 +16,7 @@ export class EmailService implements IEmailService {
         try {
             return this.repository.getAllEmails()
         } catch (err) {
-            console.log(err)
+            logger.error(err as string)
             throw new HttpException(
                 HttpStatus.BAD_REQUEST, 
                 `An error occurred while trying to get all emails.`
@@ -27,10 +28,10 @@ export class EmailService implements IEmailService {
         try {
             this.repository.saveEmail(email)
         } catch (err) {
-            console.log(err)
+            logger.error(err as string)
             if (err instanceof HttpException) throw err
             throw new HttpException(
-                HttpStatus.BAD_REQUEST, 
+                HttpStatus.BAD_REQUEST,
                 `An error occurred while trying to save the "${email}" email.`
             )
         }
@@ -45,7 +46,7 @@ export class EmailService implements IEmailService {
                 this.transporter.sendMail(this.fillEmailTemplate(email, rate))
             )
         } catch (err) {
-            console.log(err)
+            logger.error(err as string)
             throw new HttpException(
                 HttpStatus.BAD_REQUEST, 
                 'An error occurred while trying to broadcast the Bitcoin rate to subscribers.'

@@ -1,4 +1,4 @@
-import { BtcClientEnum } from '../../models/BtcClientEnum'
+import { BtcClientEnum } from '../../models/enums/BtcClientEnum'
 import { BitcoinClientFactory } from './BitcoinClientFactory'
 
 export class FactoryRegistrator {

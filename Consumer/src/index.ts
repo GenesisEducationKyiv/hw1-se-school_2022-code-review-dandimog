@@ -8,7 +8,7 @@ async function consume() {
     const channel: Channel = await connection.createChannel()
     await channel.assertQueue('Axios_logs')
 
-    channel.consume("Axios_logs", (message: ConsumeMessage | null) => {
+    channel.consume("LOGS", (message: ConsumeMessage | null) => {
         if (message) {
             console.log(`Received message: ${message.content.toString()}`)
             channel.ack(message)

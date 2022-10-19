@@ -1,3 +1,5 @@
+import { LogLevel } from "./src/models/enums/LogLevel";
+
 export const config = {
     app: {
         port: parseInt(process.env.PORT as string) ?? 3000,
@@ -17,6 +19,7 @@ export const config = {
         },
     },
     logger: {
-        destination: 'src/resources/logs/AxiosResponseLogs.log'
+        path: 'src/resources/logs/AxiosResponseLogs.log',
+        level: LogLevel.INFO
     }
 }

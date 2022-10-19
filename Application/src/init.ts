@@ -10,7 +10,7 @@ import SMTPTransport from 'nodemailer/lib/smtp-transport'
 import { ValidationService } from './services/validation/ValidationService'
 import { BitcoinClientFactory } from './factories/abstract/BitcoinClientFactory'
 import { ErrorHandler } from './services/handlers/ErrorHandler'
-import { BtcClientEnum } from './models/BtcClientEnum'
+import { BtcClientEnum } from './models/enums/BtcClientEnum'
 import { BinanceFactory } from './factories/concrete/BinanceFactory'
 import { CoinApiFactory } from './factories/concrete/CoinApiFactory'
 import { CoinGeckoFactory } from './factories/concrete/CoinGeckoFactory'
@@ -18,10 +18,8 @@ import { CoinMarketCapFactory } from './factories/concrete/CoinMarketCapFactory'
 import { FactoryRegistrator } from './factories/abstract/FactoryRegistrator'
 import { BitcoinClient } from './services/clients/abstract/BitcoinClient'
 import { BitcoinCachingProxy } from './services/proxies/BitcoinCachingProxy'
-import { BitcoinLoggingDecorator } from './services/decorators/BitcoinLoggingDecorator'
-import { MessageBrokerDecorator } from './services/decorators/MessageBrokerDecorator'
-import { IPublisher } from './services/publisher/IPublisher'
 import { RabbitMQPublisher } from './services/publisher/RabbitMQPublisher'
+import { logger } from './services/loggers/concrete/FileLogger'
 
 const transporter: Transporter = nodemailer.createTransport(config.transporter as SMTPTransport.Options)
 
@@ -35,11 +33,11 @@ const coinApiClient : BitcoinClient = BitcoinClientFactory.getClient(BtcClientEn
 
 binanceClient.setNext(coinApiClient)
 
-const publisher: IPublisher = new RabbitMQPublisher()
+const rabbitMQPublisher: RabbitMQPublisher = new RabbitMQPublisher()
 
-const bitcoinLoggingDecorator: BitcoinLoggingDecorator = new BitcoinLoggingDecorator(binanceClient)
-const messageBrokerDecorator: MessageBrokerDecorator = new MessageBrokerDecorator(bitcoinLoggingDecorator, publisher)
-const bitcoinCachingProxy: BitcoinCachingProxy = new BitcoinCachingProxy(messageBrokerDecorator, 0.2)
+logger.subscribe(rabbitMQPublisher)
+
+const bitcoinCachingProxy: BitcoinCachingProxy = new BitcoinCachingProxy(binanceClient, 0.2)
 
 const repository: IEmailRepository = new EmailRepository()
 const emailService: IEmailService = new EmailService(repository, transporter)

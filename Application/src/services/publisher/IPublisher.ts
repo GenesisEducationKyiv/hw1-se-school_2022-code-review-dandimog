@@ -1,3 +1,3 @@
 export interface IPublisher {
-    publish(destination: string, content: string): Promise<void>
+    publish(destination: string, content: string): void
 }

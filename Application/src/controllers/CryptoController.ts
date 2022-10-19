@@ -24,7 +24,6 @@ export class CryptoController implements ICryptoController {
                 .header("Content-Type", config.app.response_content_type)
                 .send({ bitcoinRate: rate.toString() + ' UAH' })
         } catch (err: unknown) {
-            console.log(err)
             this.errorHandler.handlerError(err, response)
         }
     }
@@ -43,7 +42,6 @@ export class CryptoController implements ICryptoController {
             this.emailService.subscribeEmail(email)
             response.status(HttpStatus.OK).end()
         } catch (err: unknown) {
-            console.log(err)
             this.errorHandler.handlerError(err, response)
         }
     }
@@ -55,7 +53,6 @@ export class CryptoController implements ICryptoController {
             this.emailService.sendRateToSubcribers(bitcoinRate, emails)
             response.status(HttpStatus.OK).end()
         } catch (err: unknown) {
-            console.log(err)
             this.errorHandler.handlerError(err, response)
         }
     }

@@ -1,8 +1,9 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { BtcClientEnum } from '../../../models/BtcClientEnum'
+import { BtcClientEnum } from '../../../models/enums/BtcClientEnum'
 import { HttpException } from '../../../models/erorrs/HttpException'
 import { HttpStatus } from '../../../models/erorrs/HttpStatus'
 import { Chainable } from '../../chains/Chainable'
+import { logger } from '../../loggers/concrete/FileLogger'
 import { IBitcoinClient } from './IBitcoinClient'
 
 export abstract class BitcoinClient implements IBitcoinClient, Chainable {
@@ -33,13 +34,16 @@ export abstract class BitcoinClient implements IBitcoinClient, Chainable {
         try {
             return this.retrieveRateFromResponse(await this.getAxiosResponseData())
         } catch(err) {
-            console.log(err)
+            logger.error(err as string)
             return this.getBitcoinRateNext()
         }
     }
 
-    public async getAxiosResponseData(): Promise<AxiosResponse["data"]> {
-        return (await axios.get(this.API_URL, this.buildAxiosRequest())).data
+    protected async getAxiosResponseData(): Promise<AxiosResponse["data"]> {
+        const response: AxiosResponse["data"] = 
+            (await axios.get(this.API_URL, this.buildAxiosRequest())).data
+        logger.info(`Response from ${this.NAME}: ${JSON.stringify(response, null, 4)}`)
+        return response
     }
 
     public setNext(next: BitcoinClient): Chainable {

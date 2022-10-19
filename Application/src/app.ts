@@ -6,6 +6,7 @@ import { router } from './routes/Router'
 import { config } from '../config'
 import { initRoutes } from './routes/Router'
 import { controller } from './init'
+import { logger } from './services/loggers/concrete/FileLogger'
 
 initRoutes(controller)
 
@@ -16,4 +17,4 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(router)
 
-app.listen(port, () => console.log(`App listening on port: ${port}`))
+app.listen(port, () => logger.info(`App listening on port: ${port}`))

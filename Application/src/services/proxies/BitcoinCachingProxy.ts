@@ -2,6 +2,7 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { HttpException } from '../../models/erorrs/HttpException'
 import { HttpStatus } from '../../models/erorrs/HttpStatus'
 import { BitcoinClient } from '../clients/abstract/BitcoinClient'
+import { logger } from '../loggers/concrete/FileLogger'
 
 const SECONDS_IN_ONE_MINUTE = 60
 const MILISECONDS_IN_ONE_SECOND = 1000
@@ -24,9 +25,9 @@ export class BitcoinCachingProxy extends BitcoinClient {
             bitcoinClient.API_KEY_VALUE
         )
 
-        if (minutesToLive !== undefined) {
+        if (this.minutesToLive !== undefined) {
             this.timeToLiveInMs =
-                minutesToLive * SECONDS_IN_ONE_MINUTE * MILISECONDS_IN_ONE_SECOND
+            this.minutesToLive * SECONDS_IN_ONE_MINUTE * MILISECONDS_IN_ONE_SECOND
         } else {
             this.timeToLiveInMs =
                 CACHE_EXPIRATION_LIFETIME_IN_MINS * 
@@ -52,7 +53,7 @@ export class BitcoinCachingProxy extends BitcoinClient {
             } 
             return this.cachedRate
         } catch (err) {
-            console.log(err)
+            logger.error(err as string)
             throw new HttpException(
                 HttpStatus.BAD_REQUEST, 
                 'An error occured while trying to get the Bitcoin rate.'
