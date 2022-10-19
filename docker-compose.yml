@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+  rabbitmq:
+    image: rabbitmq:3.11-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - app-tier
+  crypto_service:
+    container_name: 'crypto_service'
+    build:
+      context: ./Application
+    env_file: Application/.env
+    ports:
+      - 3000:3000
+    networks:
+      - app-tier
+    depends_on:
+      - rabbitmq
+networks:
+  app-tier:
+    driver: bridge
